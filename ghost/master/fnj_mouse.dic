@@ -1,0 +1,292 @@
+﻿//Boyfriend and Girlfriend
+OnMouseMove
+ {
+	if reference3 == 0
+	{
+		MouseMoveSakura
+	}
+	else
+	{
+		MouseMoveKero
+	}
+ }
+
+MouseMoveSakura
+ {
+	if reference4 != ""
+ 	{
+ 		stroke++
+ 		if stroke >= 40
+		{
+ 			stroke = 0
+			if reference4 == "Head"
+ 			{
+				if TakenHat <= 5
+				{
+					if beeptranslation == "on"
+					{
+					"\0\s[0]Uhhhh\w2.\w2.\w2. \w5huh.\w8\n\nThat’s kinda weird,\w4 but okay.\1\s[604]Hehe!\0\s[11]\n\nQuiet!\e"
+					"\0\s[8].\w2.\w2.\w2Sure, \w4I guess.\e"
+					"\0\s[8]Still weird...\e"
+					"\0\s[8]Uhhhhhh......\w8\0\s[0]Fine.\e"
+					"\0\s[0]..ooookay...\e "
+					"\1\s[601]\s[6001]He likes petting,\w4 but won't admit it.\w8\0\s[11]Quiet!!!\e"
+					"\0\s[8]...Fine.\e"
+					}
+					else //Only beep
+					{
+					"\0\s[11]%(beep)%(beep)%(beep) %(beep)%(beep) %(beep)%(beep)%(beep).\w8\0\s[604]hehe!\e"
+					"\0\s[8]%(beep)%(beep)...\e"
+					"\0\s[8]%(beep) %(beep).\e"
+					"\0\s[0]%(beep)!\e"
+					"\0\s[8].\w2.\w2.\w2%(beep).\e"
+					}
+				}
+				else //Good relationship
+				{
+					if WearingHat == 1 //Wearing hat
+					{
+						if beeptranslation == "on"
+						{
+						"\0\s[0]Why you even tryna' pet me anyways when I got my hat on?\w8 It's just a hat.\e"
+						"\0\s[0]You tryn'a steal my hat again?\e"
+						"\0\s[0]What, is the fabric soft or something?\e"
+						"\0\s[13]When you have my hat do you like\w2.\w2.\w2. \w8Actually wear it?\w8\1\s[10]You know you shouldn't just wear other people's headwear like that,\w3 %(username)!\e"
+						"\0\s[0]Still weird,\w3 but okay.\e"
+						"\0\s[0]%(gfname) likes to pet me too!\e"
+						}
+						else //only beep
+						{
+						"\0\s[0]%(beep).\e"	
+						"\0\s[0]%(beep)?\e"	
+						"\0\s[13]%(beep)?\e"	
+						"\0\s[13]%(beep) %(beep)?\e"	
+						"\0\s[13]%(beep) %(beep)%(beep)?\w8\1\s[10]Aww,\w4 I'm sure %(username) just thinks your hair is soft.\e"	
+						"\0\s[3]%(beep)! %(beep)\w2.\w2.\w2.\w8\0\s[13]\n\nska mep bo ahn? \e"
+						"\0\s[4]de ko unh yi san.. \e"
+						"\0\s[6]%(beep)!!\e"
+						"\0\s[9]%(beep)?\w8 \0\s[0]ah beh %(beep)\w2.\w2.\w2.\e"
+						"\0ohn da mer shik hah! \e"
+						"\0beop do os snk \e"
+						"\0do ba deh hsh ah no \e"
+						}
+					}
+					else //Not wearing hat
+					{
+						if beeptranslation == "on"
+						{
+						"\0\s[0]Fiiiine.\w8\1\s[601]\i[6001]You are pretty cute after all!\e"
+						"\0\s[0]Hm.\e"
+						"\0\s[8]Hmph.\e"
+						"\0\s[13]Why do people even like my ears anyways?\e"
+						"\0\s[13]My ears aren't even that cool though?\w8\1\s[604]They're adorable!!!\e"
+						"\0\s[0]Still weird,\w3 but okay.\e"
+						"\0\s[0]%(gfname) likes to pet me too!\e"
+						}
+						else //only beep
+						{
+						"\0\s[500]\1\s[3501]I wanna pet too!!\w8\0%(beep)!!!\e"	
+						"\0\s[0]%(beep).\e"
+						"\0\s[0]%(beep)?\e"	
+						"\0\s[13]%(beep)?\e"	
+						"\0\s[13]%(beep) %(beep)?\e"
+						"\0\s[8]%(beep).\w8\1\s[10]Don't mind %(bfname),\w4 he's just very shy about his cat ears.\e"
+						"\0\s[3]%(beep)! %(beep)\w2.\w2.\w2.\w8\0\s[13]\n\nska mep bo ahn? \e"
+						"\0\s[4]de ko unh yi san.. \e"
+						"\0\s[6]%(beep)!!\e"
+						"\0\s[9]%(beep)?\w8 \0\s[0]ah beh %(beep)\w2.\w2.\w2.\e"
+						"\0ohn da mer shik hah! \e"
+						"\0beop do os snk \e"
+						"\0do ba deh hsh ah no \e"
+						}
+						"\0\s[0]Nyah~"
+					}
+				}
+			}
+ 		}
+	}
+ 	else
+	{
+		stroke = 0
+ 	}
+}
+
+MouseMoveKero
+ {
+	if reference4 != ""
+ 	{
+ 		stroke++
+ 		if stroke >= 40
+		{
+			stroke = 0
+			if reference4 == "Point"
+			{
+				"\1\s[601]\i[6001]You should try petting %{bfname) instead~\w8\0\s[3]%(gfname)!!!\e"
+				"\1\s[10]Go ahead!\e"
+				"\1\s[10]Sure!\e"
+				"\1\s[601]\i[6001]Hmm.\e"
+				"\1\s[10]Sure,\w4 though I don't think my hair is as soft as %(bfname)'s.\w8\0\s[4]Uhhhggg...\e"
+				"\1\s[601]\i[6001]If it’s what you want,\w4 go ahead!\e"
+				"\1\s[10] *She’s humming softly.* \e"
+				"\s[601]\i[6001]Now I know how Bf feels when I pet him all the time,\w4 haha.\e"
+				"\1\s[601]\i[6001] Thank you for being nice to us!\w8\n\nWe appreciate it.\e"
+				"\1\s[601]\i[6001]Hm."
+				"\1\s[601]\i[6001] You must really like petting us...\e"
+			}	
+ 		}
+	}
+ 	else
+	{
+		stroke = 0
+ 	}
+}
+
+OnMouseDoubleClick
+ {
+	if reference5 == 0
+	{
+	 	if reference3 == 0
+		{
+		MouseDoubleClickSakura
+		}
+		else
+		{
+ 		MouseDoubleClickKero
+		}
+	}
+ }
+
+MouseDoubleClickSakura
+ {
+	if reference4 == "Head"
+	{
+		if WearingHat == 1 //Wearing hat
+		{
+			"\0\s[0]* (Do you want to take off his 	hat?)\n\n\![*]\q[Yes,takehatyes]\n\![*]\q[No,takehatno]\n\e"
+		}
+		else
+		{
+			"\0\s[0]* (Do you want to put his hat back 	on?)\n\n\![*]\q[Yes,givebackhat]\n\![*]\q[No,keephat]\n\e"
+		}
+	}
+	else
+ 	{
+ 		OpenSakuraMenu
+	}
+ }
+ 
+Select.takehatyes
+{
+	if TakenHat <= 5
+	{
+		TakenHat += 1
+		--
+		if beeptranslation == "on"
+		{
+		"\0\s[11]\![bind,face,hat,0]Hey!!!\w8\w8\![bind,face,hat,1]\0\s[8]\n\nNo way I'm lettin' you take that!\e"
+		"\0\s[11]Hey!!!\w5 Give it back!\w8\w8\![bind,face,hat,0]\n\n\0\s[8]That’s not cool.\e"
+		}
+		else
+		{
+		"\0\s[11]\![bind,face,hat,0]bafeh eh se do!!!\w8\w8\![bind,face,hat,1]\w8\1\s[601]\s[6001]He’s grouchy about his hat being taken.\e"
+		"\0\s[11]\![bind,face,hat,0]%(beep) %(beep) %(beep)!!!\w8\w8\![bind,face,hat,1]\0\s[8]\n\n%(beep).\e"
+		}
+	}
+	elseif TakenHat == 6
+	{
+		TakenHat += 1
+		--
+		if beeptranslation == "on"
+		{
+		"\0\s[11]\![bind,face,hat,0]Give it back!!!\w8\1\s[601]Hey %(bfname),\w8 I think you should let them take off your hat for now!\w8\0\s[4]\n\nBut I want it...\w8\1\s[601]\i[6001]Maybe %(username) just wants to see your ears!\w8\0\s[8]\n\nBut my ears are dumb!\w8\1\n\nAww,\w4 but I think your ears are cute too!\w8\0\s[4]\n\nSigh\w2.\w2.\w2.\w5 fine, you can take off the hat.\w8\0\s[8] But I want it back at some point!\e"
+		}
+		else
+		{
+		"\0\s[11]\![bind,face,hat,0]%(beep)%(beep)%(beep)%(beep)!!!\w8\0\s[601]Hey %(bfname)?\w8\0\s[3]%(beep)%(beep) %(beep)%(beep) %(beep)!\w8\0\s[10]I know,\w4 you don't want %(username) to have your hat...\w8 but maybe you could let %(himher) borrow it for a while?\w8\0\s[4]\n\n%(beep)......\w8\1\s[10]\n\nHey %(username)!\w8\n\nI know you want his hat,\w4 and I think he would be fine with it as long as you promise to give it back.\w8\0\s[0]%(beep).\e"
+		}
+	}
+	else
+	{
+		TakenHat += 1
+		--
+		"\0\s[0]\![bind,face,hat,0]\1\s[604]Aww!!\e"
+		if beeptranslation == "on"
+		{
+			"\0\s[0]\![bind,face,hat,0]Sure.\e"
+			"\0\s[4]\![bind,face,hat,0]If you have to.\e"
+			"\0\s[1]\![bind,face,hat,0]Sure man,\w4 just give it back later!\e"
+			"\0\s[6]\![bind,face,hat,0]Remember I want it back later!\e"
+		}
+		else
+		{
+			"\0\s[0]\![bind,face,hat,0]%(beep).\e"
+			"\0\s[4]\![bind,face,hat,0]%(beep) %(beep).\e"
+			"\0\s[1]\![bind,face,hat,0]%(beep) %(beep) %(beep)!\e"
+			"\0\s[4]\![bind,face,hat,0]%(beep) %(beep) %(beep).\e"
+		}
+	}
+}
+
+Select.takehatno
+{
+	if beeptranslation == "on"
+	{
+	"\0\s[0]Yay!\e"
+	"\0\s[13]I get to keep my hat!\e"
+	"\0\s[13]Heck yeah!\e"
+	"\0\s[6]Still my hat!\e"
+	}
+	else
+	{
+	"\0\s[0]%(beep)!\e"
+	"\0\s[13]%(beep)%(beep) %(beep)!\e"
+	"\0\s[13]%(beep)%(beep)!\e"
+	"\0\s[6]%(beep) %(beep)!\e"
+	}
+}
+
+Select.givebackhat
+{
+	if beeptranslation == "on"
+	{
+	"\0\s[6]\![bind,face,hat,1]Thanks.\e"
+	"\0\s[6]\![bind,face,hat,1]Thank you!\e"
+	"\0\s[9]\![bind,face,hat,1]Got it back!\e"
+	"\0\s[0]\![bind,face,hat,1]Wooo!\e"
+	}
+	else
+	{
+	"\0\s[6]\![bind,face,hat,1]%(beep).\e"
+	"\0\s[1]\![bind,face,hat,1]%(beep) %(beep)!\e"
+	"\0\s[9]\![bind,face,hat,1]%(beep) %(beep) %(beep)!\e"
+	"\0\s[0]\![bind,face,hat,1]%(beep)!\e"
+	}
+}
+
+Select.keephat
+{
+	if beeptranslation == "on"
+	{
+	"\0\s[6]Hmph!\e"
+	"\0\s[0]Just make sure to give it back at some point!\e"
+	"\0\s[4]Sigh...\e"
+	"\0\s[0]Give it back soon!\e"
+	}
+	else
+	{
+	"\0\s[8]%(beep).\e"
+	"\0\s[0]%(beep) %(beep)!\e"
+	}
+}
+
+MouseDoubleClickKero
+ {
+ 	if reference4 == "Point"
+	{
+		//"\1\s[10]This is hitting dialogue.\w8\0\s[5]ha ha\w8\1\s[19]\n\n[half]Quiet.\e"
+ 	}
+	else
+ 	{
+		OpenKeroMenu
+	}
+ }

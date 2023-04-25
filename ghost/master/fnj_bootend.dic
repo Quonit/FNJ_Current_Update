@@ -1,0 +1,481 @@
+﻿//---------------------------Booting and Ending--------------------------
+OnFirstBoot
+{
+ 	lastTalk = ""
+	passhour = 0
+	passmin = 0 
+	passsec = 0 
+ 	username         = "USER"
+	stroke           = 0
+ 	teachusername    = 0
+	mikireflag       = 0
+ 	aitalkinterval = 300
+ 	birthdayprint = "????"
+	talktime = "5 minutes"
+	deleteshitai = "OFF"
+	nowshell = "master"
+	firstboot = 1
+	beeptranslation = "off"
+	WearingHat = 1
+	TakenHat = 0
+	
+	if reference0 == 0
+ 	{
+		"\![bind,face,hat,1]\![enter,passivemode]\1\s[10]\0\s[1]bee\w2 bo-\w8\w8\s[2]  BEP?!??\w8\1\s[601]Hm?\w8\0\s[3]\n\n\w4Skeebebode!\w8\w8\1\s[602]\n\nOh\w3.\w3.\w3.\w8 Hm,\w6 this place sure does look different.\w8\0\s[4]\n\nbeeeeee!\w8\1\s[10]\n\nThere's a person right there! \w8\1\s[603]Maybe we could try asking them?\w8\0\s[5]\n\nBoo?\n\n[half]/
+		\w5\_q\![*]\q[He/Him/His,choicefirsthehim]\n/
+		\![*]\q[She/Her/Hers,choicefirstsheher]\n/
+		\![*]\q[They/Them/Their,choicefirsttheythem]\e"
+ 	}
+	else
+ 	{
+ 		{
+ 		"\1\s[10]\0\s[6]We back!\e"
+		}
+ 	}
+}
+
+Select.choicefirsthehim
+{
+	presuffix = "masculine"
+	himher = "him"
+	heshe = "he"
+	hisher = "his"
+	hesshes = "he's"
+	--
+	NameInput
+}
+
+Select.choicefirstsheher
+{
+	presuffix = "feminine"
+	himher = "her"
+	heshe = "she"
+	hisher = "her"
+	hesshes = "she's"
+	--
+	NameInput
+}
+
+Select.choicefirsttheythem
+{
+	himher = "them"
+	heshe = "they"
+	hisher = "theirs"
+	hesshes = "they're"
+	--
+	NameInput
+}
+
+//--NameInput
+NameInput
+{
+	"\0\s[6]Beep! \![leave,passivemode]\w8\1\s[604]What about your name? \![open,inputbox,OnNameTeach,-1]\e"
+}
+
+//--timeslot
+timeslot
+{
+	if hour >= 5 && hour <= 8
+	{	"earlymorning"	}
+	elseif hour >= 9 && hour <= 11
+	{	"morning"	}
+	elseif hour >= 12 && hour <= 14
+	{	"lunch"	}
+	elseif hour >= 15 && hour <= 17
+	{	"afternoon"	}
+	elseif hour >= 18 && hour <= 20
+	{	"evening"	}
+	elseif hour >= 21 && hour <= 24
+	{ "latenight"	}
+	else
+	{ "midnight" }
+}
+
+//--dayslot
+dayslot
+{
+	"%(month)month %(day)day"
+}
+
+//--OnBoot
+OnBoot
+ {
+	lastTalk = ""
+	passhour = 0
+	passmin = 0
+	passsec = 0
+	
+ 	"\0\s[0]\1\s[10]"
+	--
+	
+	if dayslot == userbirthday
+	{
+		"\0\s[0]It's %(bornmonthprint) %(borndayprint).\w8\1\s[10]Happy birthday, %(username).\e"
+	}
+	
+	elseif dayslot == "6month 6day"
+	{
+		"\0\s[0]Today is June 6th.\e"
+	}
+	elseif dayslot == "7month 4day"
+	{
+		"\1\s[10]It's the fourth of July.\e"
+	}
+	else
+	{
+		"%(normalboottalk)"
+	}
+}
+
+
+normalboottalk
+{
+/*	if weekday == 6 && hour >= 19
+		{
+		"\0\s[0]It's Saturday night.\e"
+		}
+	else*/if RAND(100) < 40
+		{
+			"\1\s[10]Greetings,\w2 %(username)!"
+			
+			if beeptranslation == "on"
+			{
+				"\0\s[0]Heya %(username)!"
+				
+				"\1\s[601]Do you have any plans for the day?\w8\0\s[6]Have fun with em'!"
+				
+				"\0\s[6]Hey %(username)!\w8\1\s[10]How's your day been sofar?\e"
+			}
+			else
+			{
+				"\1\s[10]Hello %(username)!\w8 Nice to see you again.\e"
+				"\1\s[500]\0\s[3502]\w8.\w8.\w8.\w8\w8\0\s[5]\1\s[604]:)\w8\0%(beep)!!!\1\s[10]\n\nOh\w4.\w4.\w4.\w4!\w8 Hey, %(username)!\w8\0\s[4]\n\n%(beep)!!!!\e"
+			}
+		}
+ 	else
+ 	{
+		if timeslot == "earlymorning" 
+		{
+			if beeptranslation == "on"
+			{
+			"\1\s[607]\0\s[7]yawn\w4.\w4.\w4.\w4.\w8\n\nIt’s so early\w4.\w4.\w4.\w8\1\s[10]But good morning!\e"
+			
+			"\1\s[607]\0\s[7]* (They both look a little tired.)\e"
+			
+			"\1\s[607]\0\s[7]%(beep) %(beep)%(beep) %(beep)...\w8\1\s[604]Hehehehe!\n\n\w8\1\s[10]\w4Sometimes he forgets to not beep early in the morning.\w8\0\s[7]\n\nUhhgg...\e"
+			}
+			else
+			{
+			"\0\s[7]\1\s[607]*yawn*\w7\n\n.\w2.\w2.\w4Good morning\w2.\w2.\w2.\0\s[7]%(beep) %(beep)\w2.\w2.\w2.\1\s[607]\n\n\w8Usually we’re both still asleep right now,\w5 but we don’t mind visiting.\w8\0\n\nBeee\w2.\w2.\w2.\w2.\e"
+			
+			"\1\s[607]\0\s[7]\w4.\w4.\w4%(beep) %(beep)\w4.\w4.\w4\w8\1Morning..\e"
+			}
+		}
+		elseif timeslot == "morning"
+		{	
+			if beeptranslation == "on"
+			{
+			"\0\s[7]\1\s[10]Morning, %(username)!\w8\0I wanna go back to bed\w2.\w2.\w2.\e"
+			
+			"\0\s[6]Morning %(username)!\e"
+			
+			"\1\s[607]\0\s[7]Yawn\w2.\w2.\w2. \w8\n\nIt’s so early\w2.\w2.\w2.\w8\1We're both usually asleep right now,\w5 but good morning to you,\w3 %(username).\e"
+			
+			"\1\s[607]\0\s[7]Morning\w2.\w2.\w2.\w8\1It's a bit early,\w6 though I hope morning has been good to you,\w4 %(username).\e"
+			
+			"\1\s[10]It’s 9am.\w8 How’s your morning been so far?\0\s[0]I hope it’s been good and you’ve got some work done!\e"
+			}
+			else
+			{
+			"\0\s[11]%(beep) %(beep) %(beep)!\w8\1\s[601]It’s still a little early,\w4 isn’t it?\w8\0\s[3]\n\n%(beep) %(beep)!!\w8\1\s[601]\n\nBut that's okay!\w8\n\n\i[6001]We like it here,\w4 don't we?\w8\0\s[4]\n\n%(beep)...\e"
+			
+			"\0\s[6]%(beep)%(beep) %(beep)!\w8\1\s[10]Morning username!\e"
+			
+			"\1\s[607]\0\s[7]%(beep)...\w8\1Morning,\w3 %(username).\e"
+			}
+		}
+		elseif timeslot == "lunch"
+		{
+			if beeptranslation == "on"
+			{
+				"\1\s[601]Have you eaten lunch yet %(username)?\w8\n\n\0\s[6]Yeah!\w4 Gotta take care of yourself!\e"
+				
+				"\0\s[4]Aww...\w4 I was just about to have lunch.\w8\1\s[601]\i[6001]But this is good too!\e"
+			}
+			else
+			{
+				"\0\s[4]%(beep)...\w8\1\s[10]It's okay!\w5 We can eat at home.\e"
+			}
+		}
+		elseif timeslot == "afternoon"
+		{
+			if beeptranslation == "on"
+			{
+				"\0\s[6]Day starting to wind down.\w8\1\s[10]How's your day been, %(username)?\e"
+
+				"\0\s[13]Isn't it a bit late?\w8\1\s[601]\i[6001]It's only the afternoon!\w8 We have lots of time to hang out.\e"
+			}
+			else
+			{
+				"\0\s[13]%(beep) %(beep)?\w8\1\s[10]Good afternoon %(username).\e"
+			}
+		}
+		elseif timeslot == "evening"
+		{
+			if beeptranslation == "on"
+			{
+				"\0\s[0]It's startin' to get a bit dark outside.\w8\1\s[4]How pretty!\w5 I love the sunset.\e"
+				
+				"\0\s[0]Are you gonna head to bed soon %(username)?\w5 I know I am once I get home!\1\s[604]Awwww!\e"
+			}
+			else
+			{
+				"\0\s[7]%(beep)...\w8\1\s[10]%(bfname) is a bit tired right now,\w3 but don't worry!\e"
+				
+				"\1\s[607]Hello %(username).\0s[0]%(beep)!"
+			}
+		}
+		elseif timeslot == "latenight"
+		{
+			"\0\s[7]\1\s[607]* yawn *\w8\n\nIt's a bit late for visitors,\w4 don't you think?\e"
+			
+			if beeptranslation == "on"
+			{
+				"\0\s[0]Oh...!\w8\n\nHey %(username)!\w5 I was just about to go to bed,\w2 actually.\e"
+			}
+			else
+			{
+				"\0\s[7]\1\s[607]Hello\w2.\w2.\w2.\e"
+			}
+		}
+		else //Midnight
+		{			
+			"\0\s[7]\1\s[607]* Yawn *"
+			
+			"\1\s[7]\1\s[607]What are you doing up so late for %(username)?\w8 Must be important..."
+
+			if beeptranslation == "on"
+			{
+				"\1\s[607]\0\s[7]Uuuhhhhgggg...\w8 Do we really have to be up so late?\w8\1Now now %(bfname),\w3 don't be rude to them."
+				
+				"\1\s[607]\1\s[7]I'm tired..."
+			}
+			else
+			{
+				"\1\s[607]\1\s[7]%(beep)........"
+			}
+		}
+	}
+}
+
+
+OnClose
+{
+	if passmin >= 5 || passhour > 0
+	{
+		if RAND(100) < 40
+		{
+			"\1s[10]See you later %(username)!"
+			
+			if beeptranslation == "on"
+			{
+				"\0\s[0]Byyyyyeeee!\w8\1\s[10]Goodbye %(username)."
+				
+				"\0\s[6]Bye!!"
+				
+				"\0\s[9]Later!"
+			}
+			else
+			{
+				"\0\s[0]%(beep)!\w8\1\s[10]Goodbye %(username)!"
+				
+				"\0\s[9]%(beep) %(beep)!"
+			}
+		}
+		else
+		{
+			if timeslot == "earlymorning"
+			{
+				if beeptranslation == "on"
+				{
+					"\0\s[6]Headed back to bed\w2.\w2.\w2.\w5 talk to you later!\w8\1\s[10]Talk to you again soon %(username)!"
+				}
+				else
+				{
+					"\1\s[10]Have a pleasent morning %(username).\w8\0%(beep)..."
+				}
+			}
+			elseif timeslot == "morning"
+ 			{
+				if beeptranslation == "on"
+				{
+					"\0\s[1]I'm gonna go eat breakfast!!\w8\1\s[604]Hehe,\w4 he's always hungry~"
+					
+					"\0\s[6]We're gonna go home and eat!\w8\1\s[10]Have a good morning %(username)!"
+					
+					"\0\s[0]Later,\w3 %(username)!\w8\1\s[10]Have a pleasent morning."
+				}
+				else
+				{
+					"\0\s[6]%(beep)!\w8\1\s[10]See you later %(username)!"
+				}
+ 			}
+ 			elseif timeslot == "lunch"
+ 			{				
+				"\1\s[10]If you have lunch soon,\w4 I hope you enjoy it!"
+				if beeptranslation == "on"
+				{
+					"\0\s[1]Lunchtime!\w8\1\s[10]Bye,\w4 %(username)!\w5 Time for us to go eat."
+					
+					"\0Are you gonna go eat?\w8 Us too!!\w4 Bye!\w8\1\s[604]Hehe~"
+				}
+				else
+				{
+					"\0\s[9]%(beep)!\w8\1\s[10]We're going to go eat now."
+				}
+ 			}
+ 			elseif timeslot == "afternoon"
+			{
+				"\1\s[10]Have a good afternoon %(username)!\e"
+				if beeptranslation == "on"
+				{
+				}
+				else
+				{
+					"\0\s[6]%(beep)%(beep)!\w8\1\s[10]Good afternoon %(username)."
+				}
+ 			}
+  			elseif timeslot == "evening"
+ 			{
+				"\1\s[10]Have a good evening,\w3 %(username)."
+				if beeptranslation == "on"
+				{
+					"\0\s[6]You gon' have dinner soon?\0\s[10]Us too!"
+					
+					"\0\s[6]G'night!\w8\1\s[10]See you later!"
+				}
+				else
+				{
+					"\1\s[10]Night!\0\s[0]%(beep)!"
+				}
+ 			}
+			elseif timeslot == "latenight"
+			{
+				"\1\s[10]Off to bed now.\w8 Sleep well!"
+				if beeptranslation == "on"
+				{
+					"\0\s[0]G'night!"
+					
+					"\0\s[0]Hell yeah I'm goin' to bed now.\w8\1\s[604]Hehe~"
+				}
+				else
+				{
+					"\0\s[9]%(beep) %(beep)!\w8\1\s[10]Night Night %(username)!"
+				}
+ 			}				
+ 		}
+	}
+ 	else
+ 	{
+		"\1\s[601]Hm,\w2 not even five minutes have passed."
+		
+ 		if beeptranslation == "on"
+		{
+			"\0\s[13]That was quick!"
+		}
+		else
+		{
+			"\0\s[2]%(beep)!?\w8\1\s[10]Goodbye so soon?"
+			
+			"\0\s[13]%(beep)?\w8\1\s[10]A quick visit,\w2 I see."
+		}
+ 	}
+ 	--
+	"\-\e"
+}
+
+OnWindowStateRestore
+ {
+	"\0\s[0]This dialogue means we were minimized.\w8\1\s[10]Then brought back up.\e"
+}
+ 
+OnGhostChanging
+ {
+	if reference0 == "Girl"
+	{
+		"\0\s[0]This dialogue is for us reloading ourselves.\w8\w8\e"
+	}
+ 	else
+	{
+		"\0\s[0]This dialogue means we are switching to %(reference0).\w8\1\s[10]Bye.\w8\w8\e"
+	}
+}
+
+
+OnGhostChanged
+{
+	"\0\s[0]\1\s[10]"
+	--
+	if reference0 == "Girl"
+	{
+		"\0\s[0]We have reloaded ourselves.\1\w8\s[10]Sure have.\e"
+	}
+	else
+	{
+		"\1\s[10]Goodbye, %(reference0).\w8\0\s[0]Someone switched from you to us.\e"
+	}
+}
+
+
+//--OnShellChanging
+
+OnShellChanging
+ {
+	if reference0 == "Hypothetical Shell that doesn't actually exist" 
+	{
+	"\1\s[10]This dialogue is specifically for changing to this particular shell.\w8\0\w8\s[9]It totally exists.\w8\e"
+	}
+	else
+	{
+	"\0\s[0]This dialogue is for changing shells.\w8\1\s[10]Sure is.\w8\e"
+	
+	"\1\s[10]This is another bit of dialogue for changing shells.\w8\0\s[8]I wonder how many people will actually have multiple shells?\e"
+	}
+ }
+ 
+OnShellChanged
+ {
+ 	if reference0 == "GT Default Shell"
+ 	{
+ 		nowshell = "master"
+		
+ 		"\0\s[0]This dialogue is for switching to our default shell.\w8\1\s[18]No really, will anyone actually put in the work to use these functions?\w8\0\s[9]\n\n[half]Shh.\e"
+ 	}
+ 	elseif reference0 == "Hypothetical Shell that doesn't actually exist" 
+ 	{
+ 		nowshell = "totallyrealshell"
+		
+ 		"\0\s[0]This dialogue is for switching to that hypothetical shell.\e"
+		
+ 		"\0\s[0]This is another bit of dialogue for switching to this hypothetical shell.\w8\1\s[18]Man if you actually use this, you should tell Zar, it'll blow her mind.\w8\0\n\n[half]\s[9]Shut up, we're not supposed to be in-character here.\e"
+ 	}
+ 	elseif reference0 == "Another totally real shell wow"
+ 	{
+ 		nowshell = "thiswouldbesomuchwork"
+		
+ 		"\1\s[10]This dialogue is after we've switched to another totally real shell.\e"
+ 	}
+ 	else
+ 	{
+	"\0\s[0]This dialogue is after we've changed our shell to %(reference[0]).\w8\1\s[18]How many shells you got?\e"
+	}
+ }
+
+
+OnDressupChanged
+{
+  if reference0 == 0 && reference1 == "Hat"
+  {
+    WearingHat = reference2
+  }
+}

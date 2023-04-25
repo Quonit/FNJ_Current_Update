@@ -1,0 +1,28 @@
+charset,UTF-8
+version,1
+option,DisableNoDefineSurfaces
+
+0,Default
+1,Throw Hand
+2,FAIL
+3,Freaked
+4,Defeated
+5,shy
+6,up
+7,tired
+8,angry
+9,down
+11,angry
+12,laugh
+13,Think
+
+10,Default
+601,chin
+602,Look around
+603,Lean
+604,Happy
+605,curious
+607,sleepy
+
+3500,Hug
+3501,Pet

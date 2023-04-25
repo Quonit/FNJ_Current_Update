@@ -1,0 +1,633 @@
+﻿//Friday Night Jammin'
+OnFileDrop2
+{
+	_filepath = SPLITPATH(reference0)
+	_filename = _filepath[2]
+	_fileext = TOLOWER(_filepath[3])
+	case _fileext
+	{
+		when ".jpg", ".jpeg", ".bmp", ".png"
+		{
+			Wallpaperfile = reference0
+			
+			"\0\s[0]The file you dropped is %(_filename)%(_fileext).\w8\1\s[10]How would you like us to set this picture as your wallpaper?\n\n[half]/
+			\![*]\q[Centered,SetWallpaper_0]\n/
+			\![*]\q[Tiled,SetWallpaper_1]\n/
+			\![*]\q[Stretched,SetWallpaper_2]\n\n[half]/
+			\![*]\q[No thanks,SetWallpaper_Cancel]\e"
+		}
+		when ".mid", ".wav", ".mp3", ".wma", ".au"
+		{
+			/*
+			"\0\s[0]I've added %(_filename) to our playlist."
+			--
+			reppath = reference0
+			--
+			addfiledropped
+			}
+			when ".m3u",".pls"
+			{
+			"\0\s[0]I added the song to the playlist!"
+			--
+			AddPlaylistDropped
+			}
+			others
+			{
+			if (FATTRIB (ref0))[2] == 1 //This verify if you added a folder, then it would take all the musics inside this folder and add them to the playlist.
+			   {
+			reppath =0
+			folderpath =reference0
+			repdropped
+			}
+			else {
+			"\0\s[0]This is %(_filename)%(_fileext).\e"
+			}
+			}
+			*/
+			if beeptranslation == "on"
+			{
+			"\0\s[1]Oh hey!\w8 Music!\w8\1\s[601]You mean %(_filename)%(_fileext)?\w8\0\s[1]\n\nYeah!\w8\n\nI'd sing it but\w4.\w4.\w4. \w8\0\s[2]Quonit hasn't put in a music player yet.\w8\1\s[601]\i[6001]\n\nAw,\w4 that's too bad!\w8 I love your singing.\w9\0\s[6]\n\n:D\e"
+			}
+			else
+			{
+			"\0\s[1]%(beep)%(beep)!\w8\1\s[601]%(_filename)%(_filetext) seems like a song,\w8 but we can't seem to do anything with it right now\w2.\w2.\w2.\w8\n\nMaybe once Quonit finished the music player,\w4 we can sing for you!\e"
+			}
+		}
+		others
+		{
+			if beeptranslation == "on"
+			{
+			"\1\s[10]This is %(_filename)%(_fileext).\0\s[7]Seems pretty useless\w2.\w2.\w2.\e"
+			}
+			else
+			{
+			"\1\s[10]This is %(_filename)%(_fileext).\0\s[0]%(beep)?\e"
+			}
+			"\1\s[10]This is %(_filename)%(_fileext).\e"
+		}
+	}
+}
+//MUSIC STUFF
+/*
+AddPlaylistDropped
+{
+	_f=FOPEN (ref0,"r")
+	_txt=0
+	_i=0
+	AllFilepath = IARRAY
+	--
+	if displaytest == 1
+	{
+		"\b2I bring all the musics of the playlist.\n"
+	}
+	--
+	while _txt != -1 && _i<5000 {
+		_i++
+		_txt = FREAD (ref0)
+		_d = _i-2
+		//先頭にFile*=がついてたらRemove_Song
+		if (STRSTR(_txt,"File%(_d)=",0))==0 
+		{
+			_txt = REPLACE(_txt, "File%(_d)=", "")
+		}
+		//先頭に#EXTM3Uや#EXTINFや[playlist]がついてなかったら○AllFilepathに追加
+		//Si # EXTM 3 U, # EXT NF ou [playlist] n'est pas attache au debut ○ ajoute a AllFilepath
+		if (STRSTR(_txt,"[playlist]",0))!=0 && (STRSTR(_txt,"#EXTM3U:",0))!=0 && (STRSTR(_txt,"#EXTINF:",0))!=0 && _txt!=-1 
+		{
+			AllFilepath = (AllFilepath,_txt)
+			--
+			//"Before, I want %(AllFilepath[0]) and %(AllFilepath[1])."
+			--
+		}
+	}
+	--
+	"I add the playlist."
+	--
+	addaplaylist = 1
+	FCLOSE (ref0)
+	if (ARRAYSIZE(AllFilepath)) >=1 {
+	addfiledropped
+	}
+}
+repdropped //If the user added a folder.
+{
+	reppath = ""
+	--
+	if displaytest == 1
+	{
+		"I take all the music files in the folder.\n"
+	}
+	--
+	path = SPLIT(FENUM(folderpath),",")
+	foreach path ; file
+	{
+			reppath = reppath + "," +folderpath +"\"+file
+	}
+	addfiledropped
+}
+addfiledropped
+{
+	//If I add a playlist, Allfilepath already have all the musics so there is nothing to do. 
+	if addaplaylist != 1
+	{
+		AllFilepath = SPLIT (reppath, ",")
+	}
+	nbfiledropped = ARRAYSIZE (AllFilepath)
+	nbmudropped = 0
+	nbmudroppedyet = 0
+	nbmuinside = 0
+	--
+	if displaytest == 1
+	{
+		"Now I add the songs and want %(AllFilepath[0]) and %(AllFilepath[1]), the first and the second music.\n"
+	}
+	--
+	foreach AllFilepath ; _Filename
+	{
+		//"I want %(_Filename)"
+		nbsong = ARRAYSIZE(songlist)
+		--
+		extent = TOLOWER ((SPLITPATH (_Filename))[3])
+		//Extension
+		_i = REPLACE(_Filename,",","CHR(0x2c)")
+		_i = REPLACE(_Filename,"!","CHR(0x21)")
+		//Verify that the file is a music. It avoids some problems, as adding to the playlist something that aren't a music.
+		if (ASEARCH(extent,'.mid','.mp3','.wav','.wma','.ogg')) != -1
+		{
+			if (ASEARCH(_Filename,songlist)) == -1
+			{
+				//Add songs that aren't in the list
+				if nbsong <=0 
+				{
+					songlist = _Filename
+				}
+				else 
+				{
+					songlist = (songlist,_Filename)
+					--
+					if displaytest == 1
+					{
+						"I add %(_Filename).\n"
+					}
+					--
+					//We add the path of the new music into the playlist
+					nbmudropped++
+				}
+			}
+			else //If there is musics already inside the playlist
+			{
+				nbmuinside = 1
+			}
+		}
+	}
+	if nbmudropped >= 1 
+	{
+	--
+	if ARRAYSIZE(songlist) == 1 {songlist = songlist[0]}
+	nbsong = ARRAYSIZE(songlist)
+	"\0\s[16]%(nbmudropped) song(s) added!\w5\0\s[0]\nThere are %(nbsong)\nsong(s) in the\nplaylist."
+	--
+	if nbmudropped == 1 && mode != "CD" {
+	"\n\n[half]　　 \q[PLAY,muinplaylist]｜\q[CLOSE,□close]"
+		}
+	}
+	else 
+	{
+		--
+		if nbmuinside >0	{"\0\s[0]There were songs already knew in there."}
+	}
+	playlistload = 0
+	SAVEVAR
+	--
+	"\e"
+}
+*/
+Select.SetWallpaper_0
+{
+	"\![set,wallpaper,%(Wallpaperfile),center]\1\s[10]The image is centered.\e"
+	if beeptranslation == "off"
+	{
+	"\![set,wallpaper,%(Wallpaperfile),center]\0\s[0]%(beep)%(beep)!\e"
+	}
+}
+Select.SetWallpaper_1
+{
+	"\![set,wallpaper,%(Wallpaperfile),tile]\1\s[10]The image is tiled.\e"
+	if beeptranslation == "off"
+	{
+	"\![set,wallpaper,%(Wallpaperfile),tile]\0\s[0]%(beep)%(beep)!\e"
+	}
+}
+Select.SetWallpaper_2
+{
+	"\![set,wallpaper,%(Wallpaperfile),stretch]\1\s[10]The image is stretched.\e"
+	if beeptranslation == "off"
+	{
+	"\![set,wallpaper,%(Wallpaperfile),stretch]\0\s[0]%(beep)%(beep)!\e"
+	}
+}
+Select.SetWallpaper_Cancel
+{
+	"\1\s[10]I won't set it then!\e"
+}
+
+OnInstallBegin
+{
+	if beeptranslation == "on"
+	{
+	"\0\s[13]What's this?\w8\1\s[10]It looks like a new ghost!\w8 How exciting!\e"
+	}
+	else
+	{
+	"\0\s[13]%(beep) %(beep)?\w8\1\s[10]It looks like a new ghost!\w8 How exciting!\e"
+	}
+	"\1\s[604]A new ghost!!\w8\n\nI'll be sure to install it for you.\e"
+}
+
+OnInstallComplete
+{
+	"\0"
+ 	--
+	if reference0 == "shell"
+ 	{	
+		if reference1 == "Hypothetical Shell that doesn't actually exist" 
+		{
+		"\s[0]We have installed Hypothetical Shell.\w8\1\s[10]Truncated for space.\e"
+		}
+		elseif reference1 == "Another totally real shell wow"
+		{
+		"\s[0]We have installed another totally real shell.\e"
+		}
+		else
+		{
+		"\s[0]We've installed a new shell.\w8\1\s[10]It's called  %(reference1).\e"
+		}
+ 	}
+	elseif reference0 == "ghost"
+ 	{
+		"\s[0]We've installed a new Ghost.\w8\1\s[10]It's called %(reference1).\e"
+ 	}
+	elseif reference0 == "balloon"
+ 	{
+		"\s[0]We've installed a new balloon.\w8\1\s[10]It's called %(reference1).\e"
+ 	}
+	elseif reference0 == "plugin"
+ 	{
+		"\s[0]We've installed a plug-in.\w8\1\s[10]It's called %(reference1).\e"
+ 	}
+	elseif reference0 == "calendar skin"
+	{
+		"\s[0]We've installed a calendar skin.\w8\1\s[10]It's called %(reference1)."
+	}
+	else
+	{
+		"\s[0]We installed %(reference1)."
+	}
+}
+
+OnInstallFailure
+ {
+	"\1\s[601]It doesn't look like I can install it\w2.\w2.\w2.\n\n[half]\w5"
+	--
+	if reference0 == "unsupported"
+	{
+	"\1\s[601]It looks like the file isn't supported.\e"
+	}	
+	elseif reference0 == "extraction"
+	{
+	"\1\s[601]The file could not be extracted properly.\e"
+	}
+ }
+
+OnInstallRefuse
+ {
+	"\0\s[602]It's possible this file might be for %(reference0) instead?\e"
+ }
+
+OnVanishSelecting
+{
+	"\1\s[10]Deciding to uninstall or not?\e"
+}
+
+OnVanishSelected
+{
+	"\1\s[10]Goodbye %(username)!\w8\0\s[0]%(beep)!\w9\w9\e"
+}
+
+OnVanishCancel
+{
+	"\1\s[10]The user has decided not to uninstall us after all.\e"
+}
+
+OnVanishButtonHold
+{
+	"\1\s[10]This dialogue displays when the user double clicks on the balloon when we're saying we're going to uninstall ourselves.\e"
+}
+
+OnVanished
+{
+	"\0\s[0]\1\s[10]%(reference0) has been uninstalled.\w8\0\s[0]Harsh.\e"
+}
+
+OnBIFFBegin
+{
+	"\1\s[10]Cehcking the email!\e"
+}
+
+OnBIFFComplete
+{
+	if reference0 == 0
+ 	{
+ 	"\1\s[10]There is no new mail.\e"
+	}
+	elseif reference0 == 1
+ 	{
+ 	"\1\s[10]There is one new email.\e"
+	}
+	elseif reference0 > 1 && reference0 < 11
+	{
+	"\1\s[10]There are %(reference0) emails.\e"
+	}
+	elseif reference0 > 100
+	{
+	"\1\s[10]There are %(reference0) emails unread.\w8\n\nSo many!\e"
+	}
+ 	else
+	{
+	"\1\s[10]There are %(reference0) emails.\e"
+ 	}
+}
+
+OnBIFFFailure
+ {
+	if reference0 == "timeout"
+ 	{
+ 		"\1\s[607]The connection has timed out.\e"
+	}
+ 	elseif reference0 == "kick"
+	{
+		"\1\s[607]I can't access the account.\e"
+ 	}
+	elseif reference0 == "defect"
+ 	{
+ 		"\1\s[607]The email account was not set up properly.\w8\n\nIt can be reset at the POP menu.\w8\![open,configurationdialog]\e"
+	}
+ 	else
+	{
+		"\1\s[607]I can't connect to the account.w8\n\nThe error returned is '%(reference[0])'.\e"
+ 	}
+}
+
+OnUpdateBegin
+{
+	if beeptranslation == "on"
+	{
+	"\1\s[10]Starting the update process!\w8\0\s[13]Wait,\w4 we got an update??\e"
+	"\0\s[0]Huh!\w4 I didn't think we'd be updated after release!\e"
+	"\0\s[13]Checking for updates.\w8\1\s[604]I wonder what new was added!\e"
+	}
+	else
+	{
+	"\0\s[13]%(beep)%(beep)?"
+	"\1\s[10]I wonder what the new update is!\w8\0\s[13]%(beep)%(beep)?\e"
+	}
+}
+
+OnUpdateReady
+{
+	reference0++
+    "\1\s[604]There are %(reference0) new files!\w8\e"
+}
+
+OnUpdateComplete
+{
+	if reference0 == "none"
+ 	{
+		"\1\s[607]Aw,\w4 apparently there wasn't anything new after all\w2.\w2.\w2.\e"
+	}
+ 	else
+	{
+		"\1\s[10]Update successful!\e"
+ 	}
+}
+
+OnUpdateFailure
+{
+	if reference0 == "timeout"
+ 	{
+ 		"\1\s[10]The update connection has timed out.\e"
+	}
+ 	elseif reference0 == "md5 miss"
+	{
+		"\1\s[10]The MD5 hash of the files don't match.\e"
+ 	}
+	else
+ 	{
+ 		"\1\s[10]The update could not be completed.\w8 The error is '%(reference0)'.\e"
+	}
+}
+ 
+OnUpdate.OnDownloadBegin
+{
+ 	if "aitalk" _in_ reference0 
+ 	{
+ 		"\0\s[0]...\e"
+ 	}
+ 	else
+ 	{
+	"\1\s[10]...\e"
+	}
+}
+ 
+OnUpdate.OnMD5CompareBegin
+{
+	"\1\s[10]Checking the MD5 value!\e"
+}
+
+OnUpdate.OnMD5CompareComplete
+{
+	"\1\s[10]MD5 check good.\e"
+}
+
+OnUpdate.OnMD5CompareFailure
+{
+	"\1\s[10]The MD5 values don't match.\w8\e"
+}
+ 
+OnHeadlinesenseBegin
+{
+	"\1\s[10]You've selected %(reference0).\e"
+}
+
+OnHeadlinesense.OnFind
+{
+ 	if reference2 == "First" || reference2 == "First and Last"
+	{
+		"\1\b2\s[10]%(reference0):"
+ 	}
+	elseif reference2 == "Next"
+ 	{
+ 		"\1\b2\s[10]%(reference0):"
+	}
+ 	elseif reference2 == "Last"
+	{
+		"\1\b2\s[10]%(reference0):"
+ 	}
+	--
+	"\n\n%reference3\n"
+ 	--
+ 	if reference2 == "First" || reference2 == "Next"
+	{
+		"\![*]\q[Next,] - \![*]\q[Stop,Headline_Cancel]\e"
+ 	}
+	else
+ 	{
+ 		"\![*]\q[Stop,Headline_Cancel]\e"
+ 	}
+}
+Select.Headline_Cancel
+{
+	"\1\s[10]Headline viewing complete.\e"
+}
+
+OnHeadlinesenseComplete
+ {
+	"\1\s[10]No update. %(reference0).\e"
+ }
+ 
+OnHeadlinesenseFailure
+  {
+	"\1\s[10]The feed can't updated because \w8\0\s[0]\n\n[half]" 
+ 	--
+	if reference0 == "can't download"
+ 	{
+		"it can't be downloaded."
+ 	}
+	elseif reference0 == "can't analyze"
+ 	{
+		"it can't be analyzed."
+ 	}
+	else
+ 	{
+		"\w2.\w2.\w2.I don't know."
+ 	}
+	--
+ 	"\e"
+}
+
+OnUpdatedataCreating
+{
+	"\1\s[10]Creating the updates2.dau file.\e"
+}
+
+OnUpdatedataCreated
+{
+	"\1\s[10]Successfully created updates2.dau.\e"
+}
+
+OnNarCreating
+{
+	if beeptranslation == "on"
+	{
+	"\1\s[10]Creating the .nar file!\w8\0\s[13]Is this like having a baby?\e"
+	}
+	"\1\s[10]Creating the .nar file.\e"
+}
+
+OnNarCreated
+{
+	"\1\s[10]Successfully created '%(reference0)'.\e"
+}
+
+OnSNTPBegin
+{
+	"\1\s[10]Connecting to %(reference0).\e"
+}
+
+OnSNTPCompare
+{
+ 	"Retrieved Time: %reference1[1]/%reference1[2]/%reference1[0] %reference1[3]:%reference1[4]:%reference1[5]\w2\n/
+	Your Time: %reference2[1]/%reference2[2]/%reference2[0] %reference2[3]:%reference2[4]:%reference2[5]\w2\n/
+ 	\n"
+	--
+ 	if reference3 == 0
+	{
+ 		"\1\s[10]Your clock is accurate!\e"
+	}
+ 	else
+	{
+ 		"\0\s[0]Your clock doesn't match.\w6\nShould we fix it?\n\n[half]/
+		\![*]\q[Fix it,OnSNTPEXECUTE]\n/
+ 		\![*]\q[Leave it alone,OnSNTPCANCEL]\e"
+	}
+}
+OnSNTPEXECUTE
+{
+	"\1\s[10]The clock has been fixed.\6\e"
+}
+OnSNTPCANCEL
+{
+	"\1\s[10]The clock will stay the same!\e"
+}
+OnSNTPFailure
+{
+	"\1\s[10]Something went wrong so I couldn't change it\w2.\w2.\w2.\e"
+}
+
+OnDisplayChange
+{
+	displaybpp    = reference0
+ 	displaywidth  = reference1
+	displayheight = reference2
+}
+
+OnScreenSaverStart
+{
+	"\0\s[3]%(beep)!!!\e"
+}
+
+OnScreenSaverEnd
+{
+	"\1\s[10]The screensaver is gone!\e"
+}
+
+OnApplicationBoot
+{
+	"\1\s[10]%(reference0) just started.\e"
+}
+ 
+OnApplicationClose
+{
+	"\1\s[10]%(reference0) has closed.\e"
+}
+
+OnApplicationFileOpen
+{
+	"\1\s[10]Opening %(reference1).\e"
+}
+
+OnBatteryLow
+{
+	"\1\s[10]The laptop's battery is low. \w8There is %(reference0) power left.\e"
+}
+ 
+OnBatteryCritical
+{
+	"\1\s[10]The laptop's battery is critically low.\e"
+}
+ 
+OnShellScaling
+{
+	if reference0 >= 150
+	{
+		"\0\s[0]%(beep)!\e"
+	}
+	elseif reference0 == 100
+	{
+		"\0\s[0]%(beep)!\e"
+	}
+	elseif reference0 == 50
+	{
+		"\0\s[0]%(beep)!\e"
+	}
+}

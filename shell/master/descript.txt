@@ -1,0 +1,59 @@
+﻿seriko.alignmenttodesktop,free
+seriko.use_self_alpha,1
+menu,hidden
+
+charset,UTF-8
+type,shell
+name,Default
+craftman,Quonit
+craftmanurl,https://friday-funkin-quonit.tumblr.com/
+
+sakura.balloon.offsetx,0
+sakura.balloon.offsety,0
+kero.balloon.offsetx,0
+kero.balloon.offsety,0
+sakura.balloon.alignment,none
+kero.balloon.alignment,none
+
+//Shiori Icon
+shiori.logo.filename,resources\niseshiori.png
+shiori.logo.x,16
+shiori.logo.y,256
+
+//Menu Font Color
+menu.background.font.color.r,255
+menu.background.font.color.g,255
+menu.background.font.color.b,255
+
+//Menu Highlighted Text Color
+menu.foreground.font.color.r,249
+menu.foreground.font.color.g,66
+menu.foreground.font.color.b,180
+
+//Menu Greyed Out Font Color
+menu.disable.font.color.r,62
+menu.disable.font.color.g,70
+menu.disable.font.color.b,295
+
+//Menu Separate Color
+menu.separator.color.r,62
+menu.separator.color.g,70
+menu.separator.color.b,295
+
+//Menu Background Image Alignment
+menu.background.alignment,righttop
+menu.foreground.alignment,righttop
+menu.sidebar.alignment,bottom
+
+//Menu Background Image Location
+menu.background.bitmap.filename,menu_background.png
+menu.foreground.bitmap.filename,menu_foreground.png
+menu.sidebar.bitmap.filename,menu_sidebar.png
+
+//--Dress-up Code
+//Hat
+sakura.bindgroup51.name,face,Hat
+sakura.bindgroup51.default,0
+//Mic
+sakura.bindgroup52.name,hand,Mic
+sakura.bindgroup52.default,0

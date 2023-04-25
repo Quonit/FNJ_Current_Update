@@ -1,0 +1,901 @@
+﻿//Friday Night Jammin'
+OpenSakuraMenu
+{
+	if beeptranslation == "on"
+	{
+		"\b2\0\s[0]What is it %(username)?"
+		"\b2\0\s[0]Hm?"
+		"\b2\0\s[0]Yeah?"
+		"\b2\0\s[6]Whad'ya want?"
+	}
+	else
+	{
+		"\b2\0\s[1]%(beep) %(beep) %(beep)%(beep)%(beep)."
+		"\b2\0\s[0]%(beep) %(beep)?"
+		"\b2\0\s[1]%(beep)?"
+	}
+	--
+	MenuRun
+}
+
+MenuRun
+ {	
+ 	wd = GetWeekDay
+ 	ap = GetAP
+ 	nowmin = Getnowmin
+ 	nowhour = Getnowhour
+	--
+	"\n\n\_q\b2"
+	--
+	if lastTalk != ""
+	{
+	  "\![*]\q[Repeat,OnLastTalk]\n\n"
+	  "\![*]\q[Ask them to repeat themselves,OnLastTalk]\n\n"
+	  "\![*]\q[Ask them to repeat what they last said,OnLastTalk]\n\n"
+	  "\![*]\q[Ask them to say what they just said,OnLastTalk]\n\n"
+	}
+	--
+ 	"\![*]\q[Say something,altalk]\n"
+	"\![*]\q[Speak,altalk]\n"
+	"\![*]\q[Talk,altalk]\n"
+	"\![*]\q[Ask them to say something,altalk]\n"
+	--
+	"\![*]\q[Config Menu,configmenu]\n/
+	\![*]\q[Functions,dosomething]\n/
+	//\![*]\q[Testvariable,testvariable]\n/
+	\![*]\q[Beep Translator,beeptranslator]\n/
+ 	\![*]\q[Change his name,Onbfnamechange]\n/
+	\![*]\q[Ask,characterask]\n\n[half]/
+ 	\![*]\q[Nevermind,CANCEL]\n\n\n[half]\q%(wd) %(nowhour):%(nowmin) %(ap),  %(month)/%(day)/%(year)\e"
+}
+
+OnLastTalk 
+{
+"%(lastTalk)\e"
+}
+
+GetWeekDay
+{
+	if weekday == 0
+	{"Sun"}
+	elseif weekday == 1
+	{"Mon"}
+	elseif weekday == 2
+	{"Tue"}
+	elseif weekday == 3
+	{"Wed"}
+	elseif weekday == 4
+	{"Thu"}
+	elseif weekday == 5
+	{"Fri"}
+	else
+	{"Sat"}
+}
+
+GetAP
+{
+ 	if hour >= 0 && hour <= 11
+ 		{"AM"}
+ 	else
+ 		{"PM"}
+}
+
+Getnowmin
+{
+	if minute >= 0 && minute <=9
+		{"0%(minute)"}
+	else
+		{"%(minute)"}
+}
+
+Getnowhour
+{
+	if hour12 >= 0 && hour12 <=9
+		{"0%(hour12)"}
+	else
+		{"%(hour12)"}
+}
+
+Select.BACKTOMENU
+	{
+		MenuRun
+	}
+
+Select.configmenu
+	{
+		TalkConfig
+	}
+
+TalkConfig
+{
+	"\0\b[2]\_q\" 
+	--
+	"f[bold,1]Your name:\f[bold,0] %(username) \f[sup,1](\q[Change it?,TEACHNAME])\f[sup,0]\n"
+	--
+	"\f[bold,1]Your pronouns:\f[bold,0] %(heshe)/%(himher)/%(hisher) \f[sup,1](\q[Change them?,TEACHPRONOUN])\f[sup,0]\n"
+	--
+	"\f[bold,1]Your birthday:\f[bold,0] %(birthdayprint) \f[sup,1](\q[Change it?,TEACHBDAY])\f[sup,0]\n\n"
+	--
+	"\f[bold,1]Talk Rate:\f[bold,0] - every %(talktime) \f[sup,1](\q[Change it,talkinter])\f[sup,0]\n\n"
+	--		
+		{
+		"\![*]Enable Uninstall? (NOW : %(deleteshitai))\n\q[ON,deleteon] \q[OFF,deleteoff]\n\n[half]\n"
+		}
+	--
+	"\![*]\q[Back to the menu,BACKTOMENU]\e"
+}
+
+Select.TEACHPRONOUN
+{
+	"\0\s[0]What pronouns do you want?\w5\n\n[half]\_q/
+		\![*]\q[He-His-Him,choicemasc]\n/
+		\![*]\q[She-Her-Her,choicefem]\n/	
+		\![*]\q[They-Their-Them,choiceneither]\e"
+}
+
+Select.choicemasc
+{
+	presuffix = "masculine"
+	himher = "him"
+	heshe = "he"
+	hisher = "his"
+	hesshes = "he's"
+	--
+	"\0\s[0]%(beep) %(beep)!\w8\1\s[10]The pronouns are now he/him.\e"
+}
+
+Select.choicefem
+{
+	presuffix = "feminine"
+	himher = "her"
+	heshe = "she"
+	hisher = "her"
+	hesshes = "she's"
+	--
+	"\1\s[10]Alright!\w8 We will call you feminine pronouns then.\e"
+}
+
+Select.choiceneither
+{
+	presuffix = "undefine"
+	himher = "them"
+	heshe = "they"
+	hisher = "their"
+	hesshes = "they're"
+	--
+	"\1\s[10]Okay!\w8 We'll call you by they/them pronouns then.\e"
+}
+
+Select.deleteon
+{
+	deleteshitai = "ON"
+	TalkConfig
+}
+
+Select.deleteoff
+{
+	deleteshitai = "OFF"
+	TalkConfig
+}
+
+Select.TEACHBDAY
+	{	
+		"\1\s[10]What month were you born? \w8Name or number is fine.\![open,inputbox,OnUserBornMonth,-1]\e"
+	}
+
+OnUserBornMonth
+{
+	_tempmonth = TOSTR(reference0)
+	_tempmonth = TOLOWER(_tempmonth)
+	if _tempmonth == "january" || _tempmonth == "1" {bornmonth = 1; bornmonthprint = "January"}
+	elseif _tempmonth == "february" || _tempmonth == "2" {bornmonth = 2; bornmonthprint = "February"}
+	elseif _tempmonth == "march" || _tempmonth == "3" {bornmonth = 3; bornmonthprint = "March"}
+	elseif _tempmonth == "april" || _tempmonth == "4" {bornmonth = 4; bornmonthprint = "April"}
+	elseif _tempmonth == "may" || _tempmonth == "5" {bornmonth = 5; bornmonthprint = "May"}
+	elseif _tempmonth == "june" || _tempmonth == "6" {bornmonth = 6; bornmonthprint = "June"}
+	elseif _tempmonth == "july" || _tempmonth == "7" {bornmonth = 7; bornmonthprint = "July"}
+	elseif _tempmonth == "august" || _tempmonth == "8" {bornmonth = 8; bornmonthprint = "August"}
+	elseif _tempmonth == "september" || _tempmonth == "9" {bornmonth = 9; bornmonthprint = "September"}
+	elseif _tempmonth == "october" || _tempmonth == "10" {bornmonth = 10; bornmonthprint = "October"}
+	elseif _tempmonth == "november" || _tempmonth == "11" {bornmonth = 11; bornmonthprint = "November"}
+	elseif _tempmonth == "december" || _tempmonth == "12" {bornmonth = 12; bornmonthprint = "December"}
+	
+	else
+	{
+			"\1\s[601]Oh,\w5 I'm sorry!\w8 Could you try typing that again?"
+			--
+			"\![open,inputbox,OnUserBornMonth,-1]\![set,balloontimeout,-1]\e"
+	}
+	--
+	
+	"\1\s[10]So,\w3 your birthday's in %(bornmonthprint)!\n\w8What day was it?"
+	--
+	"\![open,inputbox,OnUserBornDay,-1]\![set,balloontimeout,-1]\e"
+}
+
+Printday
+{
+	if bornday == 1 || bornday == 21 || bornday == 31
+	{	"%(bornday)st"	}
+	elseif bornday == 2 || bornday == 22
+	{	"%(bornday)nd"	}
+	elseif bornday == 3 || bornday == 23
+	{	"%(bornday)rd"	}
+	else
+	{	"%(bornday)th"	}
+}	
+
+OnUserBornDay
+{
+	_tempday = reference0
+	_tempday = TOLOWER(_tempday)
+	_tempday = REPLACE(_tempday,"st","")
+	_tempday = REPLACE(_tempday,"nd","")
+	_tempday = REPLACE(_tempday,"rd","")
+	_tempday = REPLACE(_tempday,"th","")
+	_tempday = TOINT(_tempday)
+	
+	if ((bornmonth == 1 || bornmonth == 3 || bornmonth == 5 || bornmonth == 7 || bornmonth == 8 || bornmonth == 10 || bornmonth == 12) && _tempday >= 1 && _tempday <= 31) || (bornmonth == 2 && _tempday >= 1 && _tempday <= 29) || ((bornmonth == 4 || bornmonth == 6 || bornmonth == 9 || bornmonth == 11) && _tempday >= 1 && _tempday <= 30)
+	{
+		bornday = _tempday
+		borndayprint = Printday
+		userbirthday = "%(bornmonth)month %(bornday)day"
+		birthdayprint = "%(bornmonthprint) %(borndayprint)"
+		
+		"%(birthchecked)"
+	}
+	else
+	{
+		"\1\s[10]Oh I'm sorry,\w4 could you try typing that again?"
+		--
+		"\![open,inputbox,OnUserBornDay,-1]\e"
+	}	
+}
+
+birthchecked
+{
+	if userbirthday == dayslot
+		{
+			"\1\s[604]Happy birthday, %(username)!!!\e"
+		}
+	else
+		{
+			"\0\s[6]%(beep)!\e"
+		}
+}
+
+Select.talkinter
+ 	{
+		"\0\s[0]\b2\1\s[10]How often would you like us to talk?\w8 Currently you've set it to %(talktime)./
+ 		\0\n\n[half]/
+ 		\![*]\q[Every 30 seconds,TALKMAX]\n/
+		\![*]\q[Every minute,TALKHIGH]\n/
+ 		\![*]\q[Every 3 minutes,TALKNORMAL]\n/
+		\![*]\q[Every 5 minutes,TALKPOOR]\n/
+ 		\![*]\q[Don't speak,TALKNONE]\n\n[half]/
+		\![*]\q[Don't change,TalksTill]\e"
+	}
+
+Select.TalksTill
+	{
+		"\1\s[10]Alright!\w8 We'll speak the same amount as normal.\e"
+	}
+
+Select.TALKMAX
+	{
+ 		talktime = "30 seconds"
+		aitalkinterval = 30
+		--
+		if beeptranslation == "on"
+		{
+ 		"\1\s[10]We will speak every 30 seconds.\0\s[13]Can we even talk that fast?\e"
+		}
+		else
+		{
+		"\0\s[3]%(beep)?!?!?!?!\1\s[10]We will speak every thirty seconds then!\e"
+		}
+	}
+
+Select.TALKHIGH
+	{
+ 		talktime = "minute"
+		aitalkinterval = 60
+		--
+		if beeptranslation == "on"
+		{
+ 		"\1\s[10]We will speak every minute seconds.\0\s[13]That's a lot...\e"
+		}
+		else
+		{
+		"\0\s[6]%(beep) %(beep)!\1\s[10]Every minute it is!\e"
+		}
+	}
+
+Select.TALKNORMAL
+	{
+ 		talktime = "3 minutes"
+		aitalkinterval = 180
+		--
+		if beeptranslation == "on"
+		{
+ 		"\1\s[10]We will speak every 3minutes.\0\s[9]Heck ye.\e"
+		}
+		else
+		{
+		"\0\s[0]%(beep) %(beep) %(beep).\1\s[10]We will speak every three minutes then!\e"
+		}
+	}
+
+Select.TALKPOOR
+	{
+ 		talktime = "5 minutes"
+		aitalkinterval = 300
+		--
+		if beeptranslation == "on"
+		{
+ 		"\0\s[9]You know,\w3 even with this slow pace wouldn't we run out of dialogue pretty quick?\1\s[10]I suppose\w4 but the ghost does have updates so likely more will be added in the future.\e"
+		}
+		else
+		{
+		"\0\s[1]%(beep) %(beep) %(beep).\1\s[10]Every five minutes it is!\e"
+		}
+	}
+
+Select.TALKNONE
+	{
+ 		talktime = "...actually we won't talk at all"
+		aitalkinterval = 0
+		--
+		if beeptranslation == "on"
+		{
+		"\1\s[10]Alright!\w5 We can be quiet.\e"
+		}
+		else
+		{
+ 		"\0\s[2]Bee?!?!\w8\1\s[601]Hehe,\w2 silence it is!\e"
+		}
+	}
+
+Select.TEACHNAME
+	{
+		OnTeachName	
+	}
+
+
+Onbfnamechange
+{
+	"\0\s[10]You wanna change my name?\n\n[half]/
+	\![*]\q[Yes,bfNameChangeYes]\n/
+	\![*]\q[Nah,bfNameChangeNo]\n/
+	\![*]\q[Original name please,bfNameChangeDefault]\e"
+}
+
+
+Select.bfNameChangeNo
+		{
+			"\1\s[10]Alright!\e"
+		}
+		Select.bfNameChangeDefault
+		{
+			gfname = "Boyfriend"
+			"\0\s[0]Back to normal!\e"
+		}
+		Select.bfNameChangeYes
+		{
+			"\0\s[0]What will my new name be?\![open,inputbox,OnbfNameTeach,-1]"
+		}
+		OnbfNameTeach
+		{
+		bfname = reference0
+			if reference0 == "" || reference0 == " " || reference0 == "   "
+			{
+			bfname = "bf"
+			"\0\s[0]You can't just call me 'blank', you have to give me a new name! \w5\n\n[half]I'll just be bf for now.\e"
+			}
+			elseif reference0 == "Keith" || reference0 == "keith"
+			{
+			"\0\s[0]Heheh,\w3 I see this one around a lot!\w8\1\s[10]I think it's a good name for you!\w8 It reminds me of your colors.\e"
+			}
+			elseif reference0 == "Evan" || reference0 == "evan"
+			{
+			"\0\s[6]Heck ye!\w8\0\s[10]I think Evan is a very blue name in my opinion.\e"
+			}
+		OnbfNameChangeDone
+		}
+OnbfNameChangeDone
+{
+	"\0\s[0]My name is now %(bfname).\e"
+}
+
+Select.characterask
+{
+	"\_q\b2\0\s[1]Who you wanna ask about?\n\n/
+	\f[bold,true]Game Characters\f[bold,false]\n/
+	\![*]\q[Daddy Dearest,askdad]	\![*]\q[Skid and Pump,askskidpump]\n/
+	\![*]\q[Pico,askpico]	\![*]\q[Mommy Dearest,askmom]\n/
+	\![*]\q[Lemon Demon,asklemon]	\![*]\q[Senpai,asksenpai]\n/
+	\![*]\q[Tankman,asktankdad]\n\n/
+	\q \f[bold,true]Mod Characters\f[bold,false]\n/
+	\![*]\q[Whitty,askwhitty]	\![*]\q[Miku,askmiku]	\![*]\q[Sky,asksky]\n/
+	\![*]\q[Sarvente,asksarvente]\n\n/
+	\![*]\q[Main Menu,MenuRun]     \![*]\q[Exit,CANCEL]\e"
+}
+Select.askdad
+{
+	
+	if beeptranslation == "on"
+	{
+	"\0\s[8]He's a jerk!\w8\1\s[601]\i[6001]hehe.\w8\0\s[11]\n\nHe's supposed to be an ex rockstar or something,\w5 but he doesn't even sing that well!\w8\0\s[13]\n\nHe's like,\w5\0\s[11] the EASIEST person I've rap battled.\w8\1\s[602]\n\nWell he is retired\w2.\w2.\w2.\w8\0\s[8]\n\nI bet his music wasn't even good to begin with\w2.\w2.\w2.\w8\1\s[10]\n\nYou two just got off on the wrong foot. \w8He is quite stubborn, \w4but once you get through to him I'm sure you'll get along!\w8\0\s[4]\n\nUuuuuhhhhhhhggggggg...\e"
+	}
+	else
+	{
+	"\0\s[11]%(beep) %(beep) %(beep)%(beep) %(beep)!\w8 %(beep)%(beep),\w4 %(beep)%(beep) %(beep) %(beep).\w8\1\s[604]Awww!\w8\0\s[8]\n\n%(beep) %(beep)!!!\w8\1\s[10]\n\n%(bfname) doesn't like dad very much,\w4 as you can tell.\e"
+	}
+}
+Select.askskidpump
+{
+	if beeptranslation == "on"
+	{
+	"\0\s[13]They're cool and all\w2.\w2.\w2.\0\s[5] But they kind of creep me out.\n\n\0\s[11] How'd they get near Lemon Demon without dying?!\e"
+	"\0\s[13]I wonder what they look like without those costumes\w2.\w2.\w2.\w8\0\s[10]But %(bfname)!\w8 How do you know it's a costume?\s[2]Beeeeeeeeeee!\e"
+	}
+	else
+	{
+	"%(beep) %(beep).\1Don't you hang out with them sometimes now?\0...%(beep)... %(beep)? %(beep)%(beep).\e"
+	}
+}
+Select.askpico
+{
+	if beeptranslation == "on"
+	{
+	"\0\s[6]Pico!!\w8\0\s[0] I like him.\w8\s[5] I-\w3 I mean obviously\w2.\w2.\w2.\w8\1They're dating!\0\s[0]Yeah!\w8 We broke up for a while\w2.\w2.\w2. \w5Took a pretty long break,\w3 but eventually we met up again and talked it out.\e"
+	
+	"\0\s[13]Sometimes I wonder how natural his orange hair is?\w8\n\nLike,\w4 is he a weird redhead? \s4Or is it weird hair like mine?\e"
+	
+	"\0\s[9]My sexually anbigious angry little friend.\e"
+	}
+	else
+	{
+	"\0\s[0]%(beep)!\w8\1They're dating\0\w8\s[9]%(beep) %(beep).\e"
+	}
+}
+Select.askmom
+{
+	if beeptranslation == "on"
+	{
+	"\0\s[13]%(gfname)'s mom is\w2.\w2.\w2. \w8Well,\w5\0\s[4] I was really expecting when I first met her to try to kill me like %(gfname)'s dad,\w8\0\s[0] But instead she just wanted to see what was up with me\w2.\w2.\w2. And apparently her way of doing that is getting us to rap on top of a limo.\e"
+	
+	"\0\s[0]You know,\w5 I feel like your mom really chilled out a lot once we started hanging out after the fight.\w8\0\s[10]She just wanted to put on a show for you!\w8 She likes to show off like that.\w8\0\s[13]\n\nYeah\w2.\w2.\w2. \w8I never really anticipated seeing her in like,\w4 a tutleneck?\e"
+	}
+	else
+	{
+	"\0\s[1]%(beep)%(beep)!\w8\0\s[10]%(bfname) was pretty scared of meeting her,\w4 but I'm pretty sure they're friends now!\w8\0\s[6]\n\n%(beep)!\e"
+	}
+
+}
+Select.asksenpai
+{
+	if beeptranslation == "on"
+	{
+	"\0\s[5]Y'know\w2.\w2.\w2.\w8 As much as he was a dick in the moment,\w4 I kinda feelw2.\w2.\w2.\w8\n\nBad for him?\w8\0\s[602]What do you mean?\w8\0\s[503]I mean, if what he said was true than that must really suck!\w8 Being trapped and unable to leave in a place you can barely act as yourself in?\w8 That's a pretty good explination for why he was such a jerk...\w8\0\s[10]\n\nI suppose.\w8 But now I don't think we need to think about it,\w2 hm?\w8\0\s[4]\n\nYeah\w2.\w2.\w2.\w8 He probably disappeared with the rest of the game.\e"
+	}
+	else
+	{
+	"\0\s[4]%(beep)...\w8\0\s[602]Aw,\w4 don't worry %(bfname).\e"
+	}
+}
+Select.asktankdad
+{
+	if beeptranslation == "on"
+	{
+	"\1\s[9]Man,\w4 that was so weird!w8\n\nI think afterwards Pico told me that was his dad?\w8\0\s[604]I thought it was soooo cool,\w4 and the music absolutely bopped.\w8\1And you picked me up!!!\w6\0\s[6]\n\nI did!!!\w8 I didn't think I'd be strong enough to do that. \0\s[0]and with one arm too!\e"
+	}
+	else
+	{
+	"\0\s[6]%(beep)%(beep)%(beep) %(beep)%(beep)!\w8 %(beep)%(beep)%(beep),\w4 %(beep)%(beep)...\w8\0\s[10]He's very excited about it,\w5 as you can tell.\e"
+	}
+}
+Select.askwhitty
+{
+	if beeptranslation == "on"
+	{
+	"\0\s[1]Oh,\w2 he’s a cool guy.\w8 Antisocial but I really can’t blame him for that.\e"
+	"\0\s[6]Singing with him was a real blast!\e"
+	"\0\s[6]He was fun to sing with! \w8,\w2.\w2.\w2\0\s[2]Even though he went totally ballistic\w2.\w2.\w2.\w8\0\s[1]\n\nStressful in the moment but awesome as heck to think back on! \e"
+	"\0\s[13]We talked afterwards\w2.\w2.\w2. \w8No hard feelings between us and we’re cool now.\e"
+	"\0\s[4]I feel a bit bad for pushing him as far as I did,\w8\0\s[0] but we’re friends now!\w5\n\nHe says I’ve made up for that in some ways.\e"
+	"\0\s[4]I really feel for him\w2.\w2.\w2.\w8\n\nHe’s had a rough time of it all.\w6 It’s no surprise he acts the way he does. \e"
+	"\0\s[4]I wish I could hang out with him more,\w5 honestly.\w8\0\s[13] But we do see each other every once in a while\w2.\w2.\w2. \w8so it’s not as bad as never talking.\e"
+	}
+	else
+	{
+	"\0\s[6]%(beep)%(beep)... %(beep)!\e"
+	"\0\s[0]%(beep)%(beep)!\e"
+	}
+	
+
+}
+/*
+Select.askmiku
+{
+	"\0\s[1]sistar\e"
+}
+
+Select.asksky
+{
+	"\0\s[1]kinda a bitch\e"
+}
+
+Select.askasksarvente
+{
+	"\0\s[1]gay france\e"
+}
+*/
+Select.beeptranslator
+{
+	if beeptranslation == "on"
+	{
+		"\0Turn off Boyfriend's beep translator?\![*]\q[YES,beeptranslatoroff]\n\![*]\q[NO,beeptranslatoron]\e"
+	}
+	else
+	{
+		"\0Turn on Boyfriend's beep translator?\![*]\q[YES,beeptranslatoron]\n\![*]\q[NO,beeptranslatoroff]\e"
+	}
+}
+
+Select.beeptranslatoron
+{
+	beeptranslation = "on"
+	--
+	"\0\s[6]Hi!\e"
+	"\0\s[6]Talk-ing~\e"
+	"\0\s[6]Beep-bo-\w8\1\s[10]Wait,\w4 I thought we turned on the translator though.\w8\0\s[8]\n\nHeheh!\e"
+}
+
+Select.beeptranslatoroff
+{
+	beeptranslation = "off"
+	--
+	"\0\s[6]%(beep)!\e"
+	"\0\s[6]%(beep) %(beep)!\e"
+	"\0\s[1]%(beep)!\e"
+	"\0\s[1]%(beep) %(beep)!\e"
+}
+
+Select.CANCEL
+{
+	if beeptranslation == "on"
+	{
+		"\0\s[0]Okay!\e"
+		"\0\s[0]Right-o!\e"
+		"\0\s[6]Whatever!\e"
+		"\0\s[1]Sure!\e"
+		"\0\s[9]Gatcha.\e"
+		"\0\s[9]'Kay.\e"
+	}
+	else
+	{
+		"\0\s[6]%(beep)~\e"
+		"\0\s[6]%(beep)!\e"
+		"\0\s[1]%(beep)!\e"
+		"\0\s[1]%(beep)%(beep) %(beep)!\e"
+	}
+}
+
+Select.dosomething
+{
+	if beeptranslation == "on"
+	{
+		"\0\s[0]Wha'd'ya want?\e"
+		"\0\s[1]What?\e"
+		"\0\s[9]What's up?\e"
+		"\0\s[6]hm?\e"
+	}
+	else
+	{
+		"\0\s[6]%(beep)?\e"
+		"\0\s[0]%(beep)...?\e"
+		"\0\s[1]%(beep) %(beep)?\e"
+		"\0\s[0]%(beep)%(beep) %(beep).\e"
+	}
+	--
+ 	"\![*]\q[Open Calendar,CALENDAR]\n/
+	\![*]\q[Check Email,MailCheck]\n/
+	\![*]\q[Open SSP Preferences,sspconfig]\n/
+	\![*]\q[Empty Recycle Bin,ChoiceGarbagecan]\n/
+	\![*]\q[System Information,ChoiceSystemInformation]\n\n/
+ 	\![*]\q[Back to main menu,BACKTOMENU]\e"
+}
+
+Select.CALENDAR
+{
+	"\1\s[10]Opening the calender!\w8\![open,calendar]\e"
+}
+
+Select.sspconfig
+{
+	"\1\s[10]Opening the SSP config menu.\w8\![open,configurationdialog]\e"
+}
+
+Select.ChoiceGarbagecan
+{
+	_gomicheck = FUNCTIONEX("gomi.dll", "-n")
+	if _gomicheck == 0
+	{
+		if beeptranslation == "on"
+		{
+		"\1\s[10]Okay!\w6 I can go get it!\0\s[3]%(beep)-\1\s[-1]\w8\w8\w8\w8\w8\![raise,OnGarbagecanEmpty]\w9\w9\w9\1\s[10]Oh,\w4 it was empty.\w8\0\s[4]Aw\w2.\w2.\w2.\w4 I wanted to get it.\e"
+		}
+		else
+		{	"\0\s[0]%(beep)!\s[-1]\w8\w8\w8\w8\w8\![raise,OnGarbagecanEmpty]\w9\w9\w9\1\s[4]%(beep)...\1\s[10]Oh,\w3 was it empty?\e"
+		}
+	}
+	elseif _gomicheck >= 1
+	{
+		"\1\s[10]Okay!\w6 I can go get it!\s[-1]\w8\w8\w8\w8\w8\![raise,OnGarbagecanEmpty]\w9\w9\w9\1\s[10]I got it!\e"
+		if beeptranslation == "on"
+		{
+		"\0\s[0]Okay!\s[-1]\w8\w8\w8\w8\w8\![raise,OnGarbagecanEmpty]\w9\w9\w9\0\s[0]Got it!\1\s[601]\i[6001]Thank you so much %(bfname)!\e"
+		}
+		else
+		{
+		"\1\s[10]Okay, I can go-\0\s[6]%(beep) %(beep)!\s[-1]\w8\w8\w8\w8\w8\![raise,OnGarbagecanEmpty]\w9\w9\w9\0\s[0]%(beep)!\w8\1\s[604]Awwww!\w6 Thank you so much for getting it for me %(bfname)!\e"
+		
+		"\0\s[0]%(beep)!\s[-1]\w8\w8\w8\w8\w8\![raise,OnGarbagecanEmpty]\w9\w9\w9\1\s[0]%(beep)!\e"
+		}
+	}
+}
+
+OnGarbagecanEmpty
+{
+	_gomi = FUNCTIONEX("gomi.dll", "-f")
+}
+
+Select.ChoiceSystemInformation
+{
+	os_name = FUNCTIONEX("saori_cpuid.dll","os.name")
+	os_version = FUNCTIONEX("saori_cpuid.dll","os.version")
+	cpu_name = FUNCTIONEX("saori_cpuid.dll","cpu.name")
+	cpu_clockex = FUNCTIONEX("saori_cpuid.dll","cpu.clockex")
+	"/
+	\0\s[0]\b[2]/
+	\_q\f[bold,1]OS:\f[bold,0] %(os_name) %(os_version)\n/
+	\f[bold,1]Memory Load:\f[bold,0] %(memoryload)%\n/
+	\f[bold,1]Physical Memory:\f[bold,0] %(memoryavailphys) KB\n/
+	\f[bold,1]CPU:\f[bold,0] %(cpu_name) %(cpu_clockex)MHz\n/
+	\f[bold,1]Ukagaka:\f[bold,0] %property[baseware.version]/
+	\e"
+}
+
+Select.MailCheck
+	{
+		"\![biff]\e"
+	}
+	
+OnChoiceTimeout
+ {
+	if beeptranslation == "on"
+	{
+	"\0\s[0]Uh, okay.\e"
+	"\0\s[0]Click if you need anything.\e"
+	"\0\s[0]...\e"
+	"\0\s[0]Kay.\e"
+	"\0\s[0]Sure?\e"
+	}
+	else
+	{
+	"\0\s[0]%(beep)?"
+	}
+ }
+
+OpenKeroMenu
+ {
+	"\1\s[10]\b[2]"
+	"\1\s[15]\b[2]"
+	"\1\s[16]\b[2]"
+ 	--
+	"\1\s[10]What is it %(username)?"
+	"\1\s[10]Yes?"
+	"\1\s[10]What do you need?"
+	"\1\s[10]Hello!"
+ 	--
+	"\n\n[half]/
+	\![*]\q[Update,keroupdatecheck]\n/
+ 	\![*]\q[Bug report,bugreport]\n/
+ 	\![*]\q[Change her name,Ongfnamechange]\n/
+	//\![*]\q[Test variable,testvariable]\n/
+	\![*]\q[Ask,charactergfask]\n/
+	\![*]\q[Hear music,Musicmenu]\n\n[half]/
+	\![*]\q[Nothing,keroCANCEL]\e"
+}
+
+Select.keroCANCEL
+{
+	"\1\s[10]Okay!\e"
+	"\1\s[10]Whatever you need %(username).\e"
+	"\1\s[10]Of course %(username).\e"
+	"\1\s[10]Mhm!\e"
+	"\1\s[601]\i[6001]Alright~\e"
+}
+
+Select.bugreport
+{
+	"\1\s[10]If you find a bug, \w4you should tell Quonit!\w8\0\s[1]We can't fix ourselves!\w8\1\s[10]So if you find anything,\w4 you should try contacting them either on their tumblr https://quonit.tumblr.com/ or on discord Quonit#9934.\e"
+}
+
+Select.keroupdatecheck
+{
+	"\1\s[10]\![updatebymyself]\e"
+}
+
+Select.charactergfask
+{
+	"\1\s[10]Who you wanna ask about?/
+	\![*]\q[Daddy Dearest,askgfdad]\n/
+	\![*]\q[Skid and Pump,askgfskidpump]\n/
+	\![*]\q[Pico,askgfpico]\n/
+	\![*]\q[Mommy Dearest,askgfmom]\n/
+	\![*]\q[Lemon Demon,askgflemon]\n/
+	\![*]\q[Senpai,askgfsenpai]\n/
+	\![*]\q[Tankman,askgftankdad]\n\n/
+	Mod characters\n\![*]\q[Whitty,askgfwhitty]\n/
+	\![*]\q[Whitty,askgfwhitty]\n/
+	\![*]\q[Miku,askgfmiku]\n/
+	\![*]\q[Sky,askgfsky]\n/
+	\![*]\q[Sarvente,askgfsarvente]\n/
+	\![*]\q[Leave,NEVERMIND]\e"
+}
+
+Select.askgfdad
+{
+	if beeptranslation == "on"
+	{
+	"\1\s[601]\i[6001]Dad!\w8\0\s[8]Jerk.\w8\1\s[601]\n\nHe's really stubborn,\w4 but I know he does care a lot.\w8\n\nHe's very caring and protective-\w8\0\s[11]\n\nMaybe just a bit TOO protective.\w8\1\n\n-But that's just how he's always been!\w8 He used to be a rockstar-\w8\0\s[8]\n\nSuprisingly,\w8\1\s[10]\n\nBut he's retired from that job.\w8\0\s[13]\n\nWhy does your family have so much money anyways?\w8\1\n\n\s[602]Mom said Dad's a record lable consultant now\w2.\w2.\w2. \w4Or something?\w8 I never asked about it much.\e"
+	}
+	else
+	{
+	"\1\s[604]Aww,\w2 Daddy!\w8\0\s[8]%(beep)%(beep)%(beep)\w2.\w2.\w2.\w8\1\s[10]\n\nI love my daddy.\w8 He can be a bit stubborn at times,\w4 but he's really nice when it's something he cares about.\w8\0\n\n%(beep) %(beep).\w8\1\s[602]\n\nMom said when I was little I had two other siblings,\0\s[2]\1\w8and when they disappeared Dad decided he wanted to be a better parent and be a better father to me!\w8\n\n\s[601]\i[6001]I think he did good at that!\e"
+	}
+}
+
+Select.askgfskidpump
+{
+	if beeptranslation == "on"
+	{
+	"\1\s[601]\i[6001]Ah,\w2 the neighborhood crypdids.\w8\0\s[0]The neighborhood what?\w8\1\s[10]\n\nWhenever they show up weird stuff starts happening!\w8 Everybody here knows about them.\w5 That's why my parents got them to come over in the first place!\0\s[7]\n\nUhhg\w2.\w2.\w2. \w5This place keeps getting weirder and weirder.\w8\1\s[10]\n\nI think it's funny how estranged by all of the monsters and demons around when you yourself are a cyan-haired furry.\w8\0\s[11]Shut up!!!\e"
+	}
+	else
+	{
+	"\0\s[601]\i[6001]They're adorable!\w8\0\s[10]I only wished they visited more often,\w4 but they go where they please.\e"
+	}
+}
+
+Select.askgfpico
+{
+	"\1When BF and Pico started talking  gain, %(bfname) really wanted me to be friends with him! I suppose it makes sense to want your friends to be friends with each other.\e"
+	"\0\s[601]\i[6001]He's adorable!\w8\n\nI think most humans are,\w4 actually.\w8\1\s[602] He also makes for a suprisingly good person to go shopping with...\e"
+	if beeptranslation == "on"
+	{
+	"\1\s[604]I think he's cute!\w8 Though,\w3 I don't know if he wants to be in a relationship with me as well.\w8\0\s[13]You wanted to date him?\w8\1\n\nHe's tiny.\w8\0\s[11]\n\nHe's taller than me!\w8\1\s[603]\n\nTo be far,\w3 that's not a high bar to reach!\w4 You are super tiny.\w8\0\s[10] I'm tall so Pico is also tiny to me.\w8\s[604]Humans are adorable.\e"
+	}
+	else
+	{
+		//beep
+	}
+}
+Select.askgfmom
+{
+	"\1\s[10]I like my Mom!\w8\n\nWhile my Dad is stubborn,\w4 she's usually the one that pulls him out of that stubborness.\w8 She's very smart,\w3 and I always trust her judgement when it comes to things.\e"
+	if beeptranslation == "on"
+	{
+	"\0\s[13]Did your mom ever have a job?\w8\0\s[601]\i[6001]Yes of course she did!\w8 She mostly helped Dad manage his rockstar stuff being the scenes.\0\s[0]Oh cool!\w8\1\s[10]\w2.\w2.\w2.\w4And she was a stripper.\w8\0\s[0]\n\nOf course.\e"
+	}
+	else
+	{
+	//If not on
+	}
+}
+Select.askgfsenpai
+{	
+	"\1\s[601]I used to play that game a lot,\w4 though I stopped being as interested in it after a while\w2.\w2.\w2. \w5So I suppose it's not too much of a loss that it's broken now.\e"
+	if beeptranslation == "on"
+	{
+	"\1\s[10]I'm just glad we got out of there\w2.\w2.\w2.\w8\0\s[3]Who knows what could've happened if we were there then the world was deleted!\e"
+	}
+	else
+	{
+	}
+}
+Select.askgftankdad
+{
+	if beeptranslation == "on"
+	{
+	"\0\s[10]%(bfname) was really scared for a second that the people Pico shot actually died.\w8\0\s[5]Yeah\w2.\w2.\w2. \w6\0\s[13]Then he explained they respawned?\w6 I still don't quite get it\w2.\w2.\w2.\e"
+	}
+	else
+	{
+	"\0\s[604]Pico was so cool coming into save us like that!!!\w8\0\s[6]Beep!\w8\1\n\nHe was showing off quite a bit though.\w6 I thought it was really cool.\e"
+	}
+}
+
+Select.askgfwhitty
+{
+	"\1\s[10]Oh, he’s so sweet\w2.\w2.\w2.\w8\n\n\s[602]I wouldn’t have expected it based on our first impression,\w2 but he is.\e"
+	"\1\s[607]He honestly just wants the world to leave him alone\w2.\w2.\w2.\w8 \1\s[10]Though I do think he’s grateful to have friends.\e"
+	"\1\s[602]He’s a good guy.\w8\n\nAbsolutely terrifying when pushed over his limits,\w5 \0\s[10]but otherwise he’s pleasant company.\w8\n\nDoesn’t talk much,\w4 but his presence is nice.\e"
+	"\1\s[10]He would benefit with more friends, \w3I think.\e"
+	"\1\s[601]Him and Bf need to hang out more.\w8\i[6001] It’s good for both of them.\e"
+	"\1\s[10]They’ve sung together after becoming friends.\w8\n\nI really like listening to it when they do.\s6 It’s a lot more fun in a no-stress,\w3 having fun environment.\e"
+}
+/*
+Select.askgfmiku
+{
+	"\0\s[1]sistar\e"
+}
+
+Select.askgfsky
+{
+	"\0\s[1]kinda a bitch\e"
+}
+
+Select.askgfasksarvente
+{
+	"\0\s[1]gay france\e"
+}
+*/
+/*
+Ongfnamechange
+{
+	"\0\s[10]You wanna change my name?\n\n[half]/
+	\![*]\q[Yes,bfNameChangeYes]\n/
+	\![*]\q[Nah,bfNameChangeNo]\n/
+	\![*]\q[Original name please,bfNameChangeDefault]\e"
+}
+*/
+Ongfnamechange
+{
+	"\1\s[10]You wanna change my name?\n\n[half]/
+	\![*]\q[Yes,gfNameChangeYes]\n/
+	\![*]\q[Nah,gfNameChangeNo]\n/
+	\![*]\q[Original name please,gfNameChangeDefault]\e"
+}
+		Select.gfNameChangeNo
+		{
+			"\1\s[10]Alright!\e"
+		}
+		Select.gfNameChangeDefault
+		{
+			gfname = "Girlfriend"
+			"\0\s[0]Back to normal!\e"
+		}
+		Select.gfNameChangeYes
+		{
+			"\1\s[10]What will my new name be?\![open,inputbox,OngfNameTeach,-1]"
+		}
+		OngfNameTeach
+		{
+		gfname = reference0
+			if reference0 == "" || reference0 == " " || reference0 == "   "
+			{
+			gfname = "gf"
+			"\0\s[0]You can't just call me 'blank', you have to give me a new name! 	\w5\n\n[half]I'll just be gf for now.\e"
+			}
+			elseif reference0 == "Cherry" || reference0 == "cherry"
+			{
+			"\1\s[604]Awww,\w4 what a cute name~\w8\0\s[0]I mean,\w4 you are pretty red!\e"
+			}
+			elseif reference0 == "Amelia" || reference0 == "amelia"
+			{
+			"\1\s[604]I've seen this name a few places before!\w8 I think it's very fitting.\e"
+			}
+		OngfNameChangeDone
+		}
+OngfNameChangeDone
+{
+	"\0\s[0]My name is now %(gfname)!\e"
+}
+
+Select.testvariable
+{
+	"\![bind,face,hat,1]\1\s[10]\0\s[1]bee\w2 bo-\w8\w8\s[2]  BEP?!??\w8\1\s[601]Hm?\w8\0\s[3]\n\n\w4Skeebebode!\w8\w8\1\s[602]\n\nOh\w3.\w3.\w3.\w8 Hm,\w6 this place sure does look different.\w8\0\s[4]\n\nbeeeeee!\w8\1\s[10]\n\nThere's a person right there! \w8\1\s[603]Maybe we could try asking them?\w8\0\s[5]\n\nBoo?\e"
+}

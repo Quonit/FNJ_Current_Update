@@ -1,0 +1,766 @@
+Select.Musicmenu
+{
+	"\1\s[601]\b2Oh I'd love to see what kind of songs you have for us!"
+	"\1\s[603]\b2Am I going to have to bring out the sterio?"
+	"\1\s[604]\b2Let's go!"
+	--
+	"\n\n\_q"
+	--
+	if isplayed != 1
+	{
+		"\![*]\q[Play,muinplaylist] %(keyplay) "
+	}
+	else
+	{
+		"\![*]\q[Stop,playmu] %(keyplay)    \![*]\q[Change the music,muinplaylist]"
+	}
+	--
+	"\n\![*]\q[Remove a song,removes]\n/
+	\![*]\q[Clear playlist,cleanplaylist] %(keyclear)\n/
+	\![*]\q[Save the playlist,nameplaylist]\n/
+	\![*]\q[Open a playlist,Openplaylist]\n/
+	\![*]\q[Remove a playlist,removep]\n/
+	\![*]\q[Erase all the playlists,cleanallplaylists]\n/
+	\![*]\q[Controls settings,controlsetting]\n/
+	\![*]\q[Change playing mode,changemode]\n/
+	\![Show the dashboard,showboard]\n\n[half]/
+	\![*]\q[Close,close]"
+	--
+	"\e"
+	
+}
+
+//Settings
+Select.changemode
+{
+	"\0\s[12]How do you want me to sing it?\n\n[half]\_q"
+	"\0\s[8]What way do you wanna hear the song?\n\n[half]\_q"
+	--
+	"\![*]\_a[onemu]\q\Play a song once\_a    \![*]\_a[onemuloop]\q\Reapeat one song\_a\n\![*]\_a[oneplaylist]\q\Play through the whole playlist once\_a    \![*]\_a[playlistloop]\q\Play through the whole playlist on loop\_a\n\![*]\_a[random]\q\Shuffle the playlist\_a"
+	--
+	"\n\n[half]\![*]\q[Go back,backmumenu]"
+}
+Select.controlsetting
+{
+	"\0\s[8]If you wanna change the hotkeys,\w3 or something like that.\n\n[half]\w8\0\s[0]Right now the hotleys are set to %(muhotkey).\n\n[half]"
+	--
+	"\![*]\q[Enable hotkeys,enablekey]    \![*]\q[Change the hotkeys,keysetting]"
+	--
+	"\e"
+	
+}
+
+//Hotkeye settings
+//To allow the keyboard controls to work or not.
+Select.enablekey
+{
+	if muhotkey == "ON"{muhotkey = "OFF"}
+	else{muhotkey = "ON"}
+	--
+	"The keyboard controls are now %(muhotkey).\n\n[half]"
+	--
+	"\![*]\q[OK,Musicmenu]"
+}
+
+//The choice of the keyboard control the user want to change.
+Select.keysetting
+{
+	"Which command do you wanna to change?\_q\n\n[half]"
+	--
+	"\![*]\q[Play-Pause,setplaykey] %(keyplay)    \![*]\q[Stop,setstopkey] %(keystop)	\n\![*]\q[Next music,setnextkey] %(keynext)    \![*]\q[Previous music,setprevkey] %(keyprev) \n\![*]\q[Clear playlist,setclearkey] %(keyclear)    "//\![*]\q[Show dashboard,setshowkey] %(keyboard)"
+	--
+	if displaytest == 1
+	{
+		"\n\n[half]\0\s[14]Alright!\w5 I'll remember that!"
+	}
+	--
+	"\n\n[half]\![*]\q[Go back,backmumenu]"
+}
+
+//Functions for the keyboard control's settings.
+Select.setplaykey
+{
+	setkey = "keyplay"
+	--
+	"\0\s[12]Press the key you wanna be the new hotkey!"
+	--
+	"\n\n[half]\![*]\q[I changed my mind,backmumenu]"
+}
+Select.setstopkey
+{
+	setkey = "keystop"
+	--
+	"\0\s[12]Press the key you wanna be the new hotkey!"
+	--
+	"\n\n[half]\![*]\q[I changed my mind,backmumenu]"
+}
+Select.setnextkey
+{
+	setkey = "keynext"
+	--
+	"\0\s[12]Press the key you wanna be the new hotkey!"
+	--
+	"\n\n[half]\![*]\q[I changed my mind,backmumenu]"
+}
+Select.setprevkey
+{
+	setkey = "keyprev"
+	--
+	"\0\s[12]Press the key you wanna be the new hotkey!"
+	--
+	"\n\n[half]\![*]\q[I changed my mind,backmumenu]"
+}
+Select.setclearkey
+{
+	setkey = "keyclear"
+	--
+	"\0\s[12]Press the key you wanna be the new hotkey!"
+	--
+	"\n\n[half]\![*]\q[I changed my mind,backmumenu]"
+}
+Select.setshowkey
+{
+	setkey = "keyboard"
+	--
+	"\0\s[12]Press the key you wanna be the new hotkey!"
+	--
+	"\n\n[half]\![*]\q[I changed my mind,backmumenu]"
+}
+
+//The functions to modify the playlist-------------------------------------------------------------------------------------------------
+
+Select.muinplaylist
+{	
+	nbtracks = SAORI("saori\mcidonut.dll", "trackcount")
+	_i = 1
+	totalsongs = songlist
+	while _i <= nbtracks
+	{
+		totalsongs = (totalsongs,_i)
+		_i = _i + 1
+	}
+	--
+	"\![enter,passivemode]\b2"
+	--
+	//The utility of the function changes depending of if you want to erase a music or to hear a music.
+	if suppr != 1
+	{
+		"\0\s[5]Here are the songs in your playlist!"
+		--
+		if currentplaylist != "newone"
+		{
+			"\w6The playlist is '%(currentplaylist)'."
+		}
+		else
+		{
+			"\w6You didn't save this playlist yet."
+		}
+		--
+		"\n\n[half]"
+	}
+	else
+	{
+		"\0\s[8]What song do you want me to stop singing?\n\n[half]"
+	}
+	--
+	nb = 0
+	playlist = ""
+	foreach songlist ; song
+	{
+		name = "%((SPLITPATH(song))[2])"
+		name = REPLACE(name,"[","t")
+		name = REPLACE(name,"]","t")
+		name = REPLACE(name,"(","t")
+		name = REPLACE(name,")","t")
+		name = REPLACE(name,"{","t")
+		name = REPLACE(name,"}","t")
+		name = REPLACE(name,"'","t")
+		name = REPLACE(name,",","t")
+		name = REPLACE(name,"\","t")
+		name = REPLACE(name,"!","t")
+		playlist = playlist + "\_a[%(name)]\_q\![*]%((SPLITPATH(song))[2])\_a"+"\_q\n"
+		nb= nb + 1
+	}
+	if nbtracks >= 1
+	{
+		_i = 1
+		while _i <= nbtracks
+		{
+			playlist = playlist + "\_a[%(_i)]\_q\![*]CD Track %(_i)\_a"+"\_q\n"
+			_i = _i + 1
+		}
+	}
+	--
+	"%playlist"
+	--
+	"\n\n[half]\![*]\q[Go back,backmumenu]"
+}
+
+//Go back to the music menu.
+Select.backmumenu
+{
+	setkey = ""
+	--
+	"\![leave,passivemode]"
+	--
+	Select.Musicmenu
+}
+
+//To remove a song or a playlist
+Select.removes
+{
+	if displaytest == 1
+	{
+		"I entered suppr mode.\n"
+	}
+	--
+	//It's for removing a song
+	suppr = 1
+	Select.muinplaylist
+}
+
+Select.removep
+{
+	if displaytest == 1
+	{
+		"I entered suppr mode.\n"
+	}
+	--
+	//It's for removing a playlist.
+	suppr = 1
+	Select.Openplaylist
+}
+
+//This erases all the playlists
+Select.cleanallplaylists
+{
+	foreach playlistlist ; playlist
+	{
+		_f = FDEL("..\..\m3u_file\%(playlist).m3u")
+		
+	}
+	--
+	"\0\s[12]I erased all the  playlists."
+	--
+	playlistlist = IARRAY
+}
+//The remove of the song	
+Removesong
+{
+	templist = songlist
+	songlist = IARRAY
+	foreach templist ; song
+	{
+		if song != songremoved
+		{
+			songlist = (songlist,song)
+		}
+	}
+	--
+	"\0\s[12]I've removed %((SPLITPATH(songremoved))[2]).\e"
+}
+
+//The remove of the playlist
+Removeplaylist
+{
+	templist = playlistlist
+	playlistlist = IARRAY
+	foreach templist ; playlist
+	{
+		if playlist != playlistremoved
+		{
+			playlistlist = (playlistlist,playlist)
+		}
+	}
+	--
+	_f = FDEL("..\..\m3u_file\%(playlistremoved).m3u")
+	--
+	"\0\s[12]I've removed %(playlistremoved).\e"
+}
+
+Select.cleanplaylist
+{
+	songlist = IARRAY
+	--
+	//If the user just wanted to clean the playlist, nothing else happen. But it will clean the whole playlist before adding the musics of a playlist loaded if we're loading a playlist.
+	if playlistload != 1
+	{
+		"\0\s[16]I've clean the playlist. \w5\0\s[14]You can add new songs now!\e"
+	}
+	else
+	{
+		if displaytest == 1
+		{
+			"\0\s[12]Cleaning the playlist before adding more music to the playlist.\n"
+		}
+		--
+		ref0 = "..\..\m3u_file\%(playlistloaded).m3u"
+		AddPlaylistDropped
+	}
+}
+
+Select.nameplaylist //Name the playlist saved.
+{
+	"\0\s[14]What do you wanna name your playlist?\![open,inputbox,OnSaveplaylist,-1]\e"
+}
+
+OnSaveplaylist //This will save a playlist for the user. The user will be able after that to load the playlist when he want. If he is loading a playlist, this would save the current musics in an other file before loading the playlist.
+{
+	if playlistload != 1
+	{
+		if displaytest == 1
+		{
+			"\0\s[0]I saved your playlist.\n"
+		}
+		--
+		playlistname = reference0
+		if ARRAYSIZE(playlistlist) <= 0
+		{
+			playlistlist = playlistname
+		}
+		else
+		{
+			playlistlist = (playlistlist,playlistname)
+		}
+	}
+	path = "..\..\m3u_file\%(playlistname).m3u"
+	//truc = "%property[ghostlist(Azura).path]testplaylist.m3u"
+	
+	_di = (SPLITPATH(reference1)[0])+(SPLITPATH(reference1)[1])
+	_f = FDEL(_di+"\tmp.m3u")
+	--
+	if displaytest == 1
+	{
+		"\0\s[3]I erased another playlist that had the same name.\n"
+	}
+	--
+	_f = FDEL(path)
+	
+	//chemin de sortie m3u
+	FCHARSET (0)
+	if (FOPEN ("dat\tmp.m3u","w")) != 0 
+	{
+		if displaytest == 1
+		{
+			"\0\s[12]I added the songs to a temporary file.\n "
+		}
+		--
+		foreach songlist ; song 
+		{
+			FWRITE ("dat\tmp.m3u",song)
+		}
+		FCLOSE ("dat\tmp.m3u")
+		if (FCOPY ("dat\tmp.m3u",_di))==1 
+		{
+			if displaytest == 1
+			{
+				"\0\s[12]The temporary file is the new playlist now!\n"
+			}
+			--
+			_i = FRENAME (_di+"\tmp.m3u",path)
+		}
+	}
+	--
+	if playlistload != 1
+	{
+		"\0\s[6]I've saved %(playlistname).\e"
+	}
+	else
+	{
+		if displaytest == 1
+		{
+			"\0\s[12]And I have saved the other songs before before making the playlist.\n"
+		}
+		-- //If the user is loading a playlist, after saving the current song, it would clean the playlist before loading the playlist he want.
+		Select.cleanplaylist
+	}
+}
+
+Select.Openplaylist //The user chose the playlist they want to load.
+{
+	"\![enter,passivemode]"
+	--
+	myplaylists = ""
+	--
+	"\0\s[16]Here are the saved playlists!\n\n[half]"
+	--
+	foreach playlistlist ; playlist
+	{
+		myplaylists = myplaylists + "\_a[%(playlist)]\_q\![*]%(playlist)\_a" + "\_q\n"
+	}
+	--
+	
+	"%myplaylists"
+	--
+	"\n\n[half]\![*]\q[Go back,backmumenu]"
+}
+
+//The play functions------------------------------------------------------------------------------------------------
+Select.playmu
+{
+	if isplayed != 0
+	{
+		isplayed = 0
+		if paused == 1
+		{
+			if displaytest == 1
+			{
+				"\0\s[8]Song's been paused?\n"
+			}
+			--
+			_i=SAORI("saori\mciaudior.dll", "play")
+			--
+			if songplayed == TOINT(songplayed)
+			{
+				_e=SAORI("saori\mcidonut.dll", "play")
+			}
+			--
+			paused = 0
+		}
+		else
+		{
+			if displaytest == 1
+			{
+				"\0\s[1]I'll stop singing.\stop"
+			}
+			--
+			_i=SAORI("saori\mciaudior.dll", "stop")
+			_e=SAORI("saori\mcidonut.dll","stop")
+		}
+		--
+		"\0\s[0]"
+	}
+	else
+	{
+		isplayed = 1
+		if songpaused != songplayed
+		{
+			if displaytest == 1
+			{
+				"\0\s[8]Loading new music...?\n"
+			}
+			--
+			_e=SAORI("saori\mcidonut.dll", "stop")
+			_e=SAORI("saori\mcidonut.dll","seek",songplayed)
+			_i=SAORI("saori\mciaudior.dll","load","%(songplayed)")
+		}
+		--
+		"\0\s[12]"
+		-- //Bringing back paused to 0 and songpaused to empty because there is no music in pause.
+		paused = 0
+		--
+		if displaytest == 1
+		{
+			"\0\s[12]I will sing the song.\n"
+		}
+		--
+		if songplayed == TOINT(songplayed)
+		{
+			_e=SAORI("saori\mcidonut.dll", "play")
+		}
+		--
+		_i=SAORI("saori\mciaudior.dll", "play")
+		songpaused = ""
+	}
+	--
+	"\e"
+}
+
+Select.previousmu
+{
+	_i=SAORI("saori\mcidonut.dll", "stop")
+	isplayed = 0
+	lastsong = totalsongs[ARRAYSIZE(totalsongs)-1]
+	num = 0
+	nb = 0
+	foreach totalsongs ; song
+	{
+		if song == songplayed
+		{
+			num = 1
+		}
+		--
+		if num != 1
+		{
+			nb = nb + 1
+		}
+	}
+	--
+	if nb >= 1
+	{
+		songplayed = totalsongs[nb-1]
+	}
+	else
+	{
+		songplayed = lastsong
+	}
+	--
+	Select.playmu
+}
+
+Select.nextmu
+{
+	_i=SAORI("saori\mcidonut.dll", "stop")
+	isplayed = 0
+	lastsong = totalsongs[ARRAYSIZE(totalsongs)-1]
+	fs = 0
+	foreach totalsongs ; song
+	{
+		if fs !=1
+		{
+			if song == songplayed
+			{
+				fs = 1
+			}
+		}
+		elseif songplayed != lastsong
+		{
+			songplayed = song
+			fs = 0
+			Select.playmu
+		}
+	}
+}
+OnMAAPlayFinish //When the player has finished to play a music.
+{
+	_f = SAORI("saori\mcidonut.dll", "stop")
+	_f = SAORI("saori\mciaudior.dll","stop")
+	fs = 0
+	isplayed = 0
+	
+	nbtracks = SAORI("saori\mcidonut.dll", "trackcount")
+	_i = 1
+	totalsongs = songlist
+	while _i <= nbtracks
+	{
+		totalsongs = (totalsongs,_i)
+		_i = _i + 1
+	}
+	lastsong = totalsongs[ARRAYSIZE(totalsongs)-1]
+	//It verify in which mode it is and play the next music, return to the begin of the playlist, replay the same music, etc depend of the mode. 
+	if playmode != "random"
+	{
+		if playmode != "onemu"
+		{	
+			if playmode != "onemuloop"
+			{
+				if songplayed != lastsong
+				{
+					foreach totalsongs ; song
+					{
+						if fs !=1
+						{
+							if song == songplayed
+							{
+								fs = 1
+							}
+						}
+						elseif songplayed != lastsong
+						{
+							songplayed = song
+							fs = 0
+							Select.playmu
+						}
+					}
+				}
+				else
+				{
+					if playmode !="oneplaylist"
+					{
+						songplayed = songlist[0]
+						Select.playmu
+					}
+				}
+			}
+			else
+			{
+				Select.playmu
+			}
+		}
+	}
+	else
+	{
+		if chose == "right" 
+		{
+			if ARRAYSIZE(muplayed) <= 0
+			{
+				muplayed = songplayed
+			}
+			else
+			{
+				muplayed = (muplayed, songplayed)
+			}
+		}
+
+		if (ARRAYSIZE(muplayed)) < (ARRAYSIZE(songlist)+nbtracks)
+		{
+			chose = "other"
+			while chose != "right" || ARRAYSIZE(totalsongs)<=1
+			{
+				song = ANY(totalsongs)
+				chose = "right"
+				--
+				foreach muplayed ; music
+				{
+					if music == song || song == songplayed
+					{
+						chose = "other" //If the music has been played before, it would restart and chose a new music.
+					}
+					
+				}
+			}
+			
+		}
+		else
+		{
+			song = ANY(totalsongs) //If all the playlist has been played, the player will restart to play the whole playlist and the function will restart to chose a new music.
+			muplayed = IARRAY
+			--
+			if displaytest == 1
+			{
+				"*I reseted the playlist."
+			}
+			--
+			while song == songplayed || ARRAYSIZE(totalsongs) <= 1
+			{
+				song = ANY(totalsongs)
+			}
+			
+		}
+		songplayed = song
+		--
+		Select.playmu
+	}
+}
+OnMCIDonutTrackFinish
+{
+	_f=SAORI("saori\mcidonut.dll", "stop")
+	_f = SAORI("saori\mciaudior.dll","stop")
+	fs = 0
+	isplayed = 0
+	
+	nbtracks = SAORI("saori\mcidonut.dll", "trackcount")
+	_i = 1
+	totalsongs = songlist
+	while _i <= nbtracks
+	{
+		totalsongs = (totalsongs,_i)
+		_i = _i + 1
+	}
+	lastsong = totalsongs[ARRAYSIZE(totalsongs)-1] //It verify in which mode it is and play the next music, return to the begin of the playlist, replay the same music, etc depend of the mode. 
+	if playmode != "random"
+	{
+		if playmode != "onemu"
+		{	
+			if playmode != "onemuloop"
+			{
+				if songplayed != lastsong
+				{
+					foreach totalsongs ; song
+					{
+						if fs !=1
+						{
+							if song == songplayed
+							{
+								fs = 1
+							}
+						}
+						elseif songplayed != lastsong
+						{
+							songplayed = song
+							fs = 0
+							Select.playmu
+						}
+					}
+				}
+				else
+				{
+					if playmode !="oneplaylist"
+					{
+						songplayed = songlist[0]
+						Select.playmu
+					}
+				}
+			}
+			else
+			{
+				Select.playmu
+			}
+		}
+	}
+	else
+	{
+		if chose == "right" 
+		{
+			if ARRAYSIZE(muplayed) <= 0
+			{
+				muplayed = songplayed
+			}
+			else
+			{
+				muplayed = (muplayed, songplayed)
+			}
+		}
+
+		if (ARRAYSIZE(muplayed)) < (ARRAYSIZE(songlist)+nbtracks)
+		{
+			chose = "other"
+			while chose != "right" || ARRAYSIZE(totalsongs)<=1
+			{
+				song = ANY(totalsongs)
+				chose = "right"
+				--
+				foreach muplayed ; music
+				{
+					if music == song || song == songplayed
+					{
+						chose = "other" //If the music has been played before, it would restart and chose a new music.
+					}
+					
+				}
+			}
+			
+		}
+		else
+		{
+			song = ANY(totalsongs) //If all the playlist has been played, the player will restart to play the whole playlist and the function will restart to chose a new music.
+			muplayed = IARRAY
+			--
+			if displaytest == 1
+			{
+				"I reset the playlist."
+			}
+			--
+			while song == songplayed || ARRAYSIZE(totalsongs) <= 1
+			{
+				song = ANY(totalsongs)
+			}
+			
+		}
+		songplayed = song
+		--
+		Select.playmu
+	}
+}
+
+OnMCIDonutCDInsert
+{
+	nbtracks = SAORI("saori\mcidonut.dll", "trackcount")
+	_i = 1
+	totalsongs = songlist
+	while _i <= nbtracks
+	{
+		totalsongs = (totalsongs,_i)
+		_i = _i + 1
+	}
+}
+
+OnMCIDonutCDEject
+{
+	if songplayed == TOINT(songplayed)
+	{
+		isplayed = 0
+		paused = 0
+		_f = SAORI("saori\mcidonut.dll", "stop")
+	}
+}

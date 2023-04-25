@@ -1,0 +1,613 @@
+﻿//Friday Night Jammin'
+AiTalk
+ {
+	if RAND(100) < communicateratio
+ 	{
+ 		StartCommunicate
+	}
+ 	else
+	{
+ 		if mikireflag == 0
+		{
+			if CHAIN.IDName == "" {
+ 				lastTalk = RandomTalk
+			}
+			else {
+				lastTalk = ChainTalk
+			}
+			lastTalk
+		}
+ 		else
+		{ 
+		MikireTalk
+ 		}
+	}
+ }
+
+RandomTalk : nonoverlap
+{
+
+//"\1\s[10]Hello %(username)!\n\n\w8It was very kind of you to download us both,\w4 but I would like to apologize and explain that we do not have much to say at this point in time.\w8\n\nSense we were created in only a week,\w4 the developers didn't have as much time to add a lot of dialogue between the two of us.\w8\n\nThere will be more updates in the future though,\w4 so thank you for being patient.\e"	
+
+if beeptranslation == "on"
+{
+	"\0\s[13]How'd we even end up here in the first place?\w8\n\n\s[11]Like\w2.\w2.\w2. \w6Were we teleported? \w8Is this a real place?\w8 Doesn't look normal.\w8\1\s[10]I think it's interesting!\w8 Best not to worry too much.\e"
+	
+	"\0\s[4]%(beep)\w2.\w2.\w2.\w8\1\s[602]What is it %(bfname)?\w8\0\n\nI wish Pico were here.\w8 He always makes things a lot more interesting.\w8\1\s[601]\n\nMaybe we can invite him!\w8\0\s[11]\n\nHow are we supposed to do that??\w8 %(username)'s the one that brings us here!\e"
+	
+	"\0\s[13]%(gfname),\w2 do you ever feel bored on %(username)'s computer?\w8\1\s[10]Hmm,\w3 not really.\w8\1\s[603]\n\nWhy do you ask?\w8\0\s[0]\n\nI just wanted to make sure you were cool with it!\w8\1\n\nAre you?\w8\0\s[13]\n\nWell\w2.\w2.\w2.\w8\n\nI'm not in immediete danger like most places,\w4 and %(username) is nice,\w4 so yeah!\w5 I like it here.\e"
+}
+else
+{
+	"\0\s[6]%(beep) %(beep)-\w8\w2\1\s[601]bloo?\w8\0\s[0]\n\n%(beep) %(beep)!\e"
+	//Work in Progress Dialogue + Dialogue ideas
+	
+	//Argument. Doesn't have poses yet. Argue all in beeps then they laugh
+}
+/*
+	if weekday == 1
+	{
+		"\0\s[0]This is dialogue for Monday.\w8\1\s[10]Yup.\e"
+		
+		"\0\s[0]This is more dialogue for Monday.\w8\1\s[10]That it is.\e"
+	}
+	if weekday == 2
+	{
+		"\0\s[0]This is dialogue for Tuesday.\w8\1\s[10]Yup.\e"
+		
+		"\0\s[0]This is more dialogue for Tuesday.\w8\1\s[10]That it is.\e"
+	}
+	if weekday == 3
+	{
+		"\0\s[0]This is dialogue for Wednesday.\w8\1\s[10]Yup.\e"
+		
+		"\0\s[0]This is more dialogue for Wednesday.\w8\1\s[10]That it is.\e"
+	}
+	if weekday == 4
+	{
+		"\0\s[0]This is dialogue for Thursday.\w8\1\s[10]Yup.\e"
+		
+		"\0\s[0]This is more dialogue for Thursday.\w8\1\s[10]That it is.\e"
+	}
+	if weekday == 5
+	{
+		"\0\s[0]This is dialogue for Friday.\w8\1\s[10]Yup.\e"
+		
+		"\0\s[0]This is more dialogue for Friday.\w8\1\s[10]That it is.\e"
+	}
+	if weekday == 6
+	{
+		"\0\s[0]This is dialogue for Saturday.\w8\1\s[10]Yup.\e"
+		
+		"\0\s[0]This is more dialogue for Saturday.\w8\1\s[10]That it is.\e"
+	}
+	if weekday == 7
+	{
+		"\0\s[0]This is dialogue for Sunday.\w8\1\s[10]Yup.\e"
+		
+		"\0\s[0]This is more dialogue for Sunday.\w8\1\s[10]That it is.\e"
+	}
+	*/
+	if timeslot == "earlymorning"
+	{
+		if beeptranslation == "on"
+		{
+		"\0\s[7]Man,\w3 whenever we get back home I'm goin' back to bed.\e"
+		}
+		else
+		{
+			"\0\s[7]%(beep)...."
+		}
+	}
+	if timeslot == "morning"
+	{
+		"\1\s[10]Hmm...\w5 The morning is so nice,\w3 isn't it?\e"
+	}
+	if timeslot == "lunch"
+	{
+		if beeptranslation == "on"
+		{
+			"\0\s[4]Uhhhggg\w2.\w2.\w2.\w8\1\s[601]What's wrong %(bfname)?\w8\0\n\nMan,\w4 I'm just REALLY hungry right now.\w8 Like,\w5 \f[italic,1]really\f[italic,0].\w8\1\s[601]\n\nWell,\w3 whenever we get back home I have some food.\w8\0\s[13]\n\nI saw some pretty %(taste) %(food) in %(username)'s %(usersfolder).\w8 Couldn't we just go get that?\w8\1\s[10]\n\nWhat's wrong with the food at home?\w8\0\s[7]\n\nlast time I opened your fridge your dad threatened to trap me in a video game\w2.\w2.\w2.\w8\1\s[601]\n\nOh\w2.\w2.\w2.\w6 I see.\e"
+		}
+		else
+		{
+			"\0\s[4]Beeeeee...\w8\1\s[601]What's wrong %(bfname)?\w8\0\s[4]\n\n%(beep) %(beep)...\w8\1\s[10]\n\nOh, you're hungry?\w8\0\s[1]\n\n%(beep)!\w8\1\s[601]\i[6001]\n\nI will get you some food when we get home!\w8\0\s[2]\n\n%(beep)...\e"
+		}
+	}
+	if timeslot == "afternoon"
+	{
+		//Nothing here yet my dudes
+	}
+	if timeslot == "evening"
+	{
+		if beeptranslation == "on"
+		{
+			"\0\s[1]Hey %(username)!\w6 If you're gonna go to bed anytime soon,\w4 can you make sure to close us first?\w8\1\s[601]I think %(username) seems responsible enough to do that,\w4 but it was very nice of you to remind %(himher).\e"
+		}
+		else
+		{
+			"\0\s[7]%(beep) %(beep)...\w8\1\s[10]Aww,\w4 do you miss home %(bfname)?\w8\0\s[4]\n\n%(beep).\w4\1\s[601]\i[6001]\n\nIt's okay!\w4 When we get home we can watch the sun set together!\e"
+		}
+
+	}
+	if timeslot == "latenight"
+	{
+		if beeptranslation == "on"
+		{
+			"\0\s[7]Man...\w5 I'm tired.\w5 How 'bout you?\w8\1\s[10]I am a little bit sleepy...\w5 but I can stay up.\e"
+			
+			"\0\s[7]I'm tired\w2.\w2.\w2.\w8 I wanna go home soon.\e"
+		}
+		else
+		{
+			"\0\s[7]* yawn *\w8\1\s[604]Awww!\w4 You're so cute when you're tired.\e"
+		}
+	}
+	if timeslot == "midnight"
+	{
+		"\1\s[607]* yawn *\e"
+		
+		if beeptranslation == "on"
+		{
+			"\0\s[7]I wanna go to bed...\e"
+			
+			"\0\s[7]What're you even doin' up so late?\w8\1\s[10]Maybe %(heshe)'s working on some important project?\e"
+		}
+		else
+		{
+			"\0\s[7]%(beep).........\e"
+		}
+	}
+}
+
+
+achain
+{{CHAIN
+	"\0\s[0]Here is the second part of the chain.\w8\1\s[10]Will there be more?\e"
+	
+	"\0\s[0]This is the third part of chained dialogue.\1\w8\s[10]This will lead to a fourth part.\e"
+	
+	"\0\s[0]This is the fourth piece of chained dialogue.\1\w8\s[10]This is the end.\e:chain=end"
+}}CHAIN
+
+anotherchain
+{{CHAIN
+	"\0\s[0]This is the second example of chained dialogue.\1\w8\s[10]This will only have two parts.\e"
+	
+	"\0\s[0]This is the last piece of the second example of chained dialogue\1\w8\s[10]This will end here.\e:chain=end"
+}}CHAIN
+
+HourCheck
+{
+if passmin >= 59
+	{
+		passmin = 0
+		passhour = passhour + 1
+	}
+}
+
+OnMinuteChange
+{
+	HourCheck
+	--
+ 	if minute == 0
+	{
+		if hour == 1
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		elseif hour == 2
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		elseif hour == 3
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		elseif hour == 4
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		elseif hour == 5
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		elseif hour == 6
+		{
+			if beeptranslation == "on"
+			{
+				"\1\s[607]\0\s[7]Yawn\w2.\w2.\w2. \w8\n\nWhy do I have to be up at six\w2.\w2.\w2.\w8\1We're both usually asleep right now,\w5 but good morning to you.\e"
+			}
+			else
+			{
+				"\1\s[607]\0\s[7]%(beep) %(beep)\w2.\w2.\w2.\w8\1It's 6 a.m,\w5 Quite early for %(bfname).\e"
+			}
+		}
+		elseif hour == 7
+		{
+			if beeptranslation == "on"
+			{
+				"\0\s[7]It's so eeeaarrllyyy...\w8\1\s[601]I suppose 7 a.m. would be for you,\w5 though it is getting soon to when the world starts waking up."
+			}
+			else
+			{
+				"\0\s[7]%(beep)......\w8\1\s[601]I suppose 7 a.m. would be for you,\w5 though it is getting soon to when the world starts waking up."
+			}
+		}
+		elseif hour == 8
+		{
+				"\0\s[6]Good morning!\1\w8I suppose 8 a.m. is still a bit early,\w5 but the world is waking up.\e"
+		}
+		elseif hour == 9
+		{
+			if beeptranslation == "on"
+			{
+				"\1\s[10]It’s 9am.\w8 How’s your morning been so far?\0\s[0]I hope it’s been good and you’ve got some work done!\e"
+			}
+			else
+			{
+				"\1\s[10]It’s 9am.\w8 How’s your morning been so far?\0\s[0]%(beep) %(beep) %(beep)%(beep) %(beep) %(beep) %(beep) %(beep)!\e"
+			}
+		}
+		elseif hour == 10
+		{
+			if beeptranslation == "on"
+			{
+				"\0\s[13]It's 10a.m.\w2.\w2.\w2.\w8 I'm getting just a little hungry\w2.\w2.\w2.\w8\1\s[604]Hehe!\w8 Just give it a bit longer and it'll be lunchtime.\w8\0\s[0]\n\nYeah\w2.\w2.\w2.\w6\0\s[5] But I was kind of looking for breakfast?\e"
+			}
+			else
+			{
+				"\1\s[10]It's 10 a.m!\w8\0\s[0]%(beep) %(beep)!\e"
+			}
+		}
+		elseif hour == 11
+		{
+			if beeptranslation == "on"
+			{
+				"\1\s[10]It's 11a.m!\w8 The morning is almost over now!\w8\0\s[13]I wonder what I should have for lunch...\e"
+			}
+			else
+			{
+				"\1\s[10]It's 11a.m!\w8 The morning is almost over now!\w8\0\s[13]%(beep) %(beep)...\e"
+			}
+		}
+ 		elseif hour == 12
+		{
+			if beeptranslation == "on"
+			{
+				"\0\s[12]Lunchtime!!!\w6 %(beep) %(beep) %(beep)!\n\n\1\s[601]\i[6001]Hehe,\w5 He always gets so excited when it's time to eat.\e"
+			}
+			else
+			{
+				"\0\s[0]%(beep)!!!\w6 %(beep)!!!\w8\1\s[601]Oh? Are you hungry?\w8\0\s[1]\n\n%(beep) %(beep)!\w8\1\s[10]\n\nWell I'll have to get you something when we get home.\w8\0\s[2]\n\nBeeee...\e"
+			}
+		}
+		elseif hour == 13
+		{
+			if beeptranslation == "on"
+			{
+				"\0\s[0]It's 1 p.m!\e"
+			}
+			else
+			{
+				"\0\s[1]%(beep) %(beep) %(beep) %(beep) %(beep).\w8\w8\1\s[604]%(beep)~\w8\w8 \1\s[601]\i[6001]\n\nIt's 1 p.m!\e"
+			}
+		}
+		elseif hour == 14
+		{
+			if beeptranslation == "on"
+			{
+				"\1\s[10]It's 2p.m!\w8\0\s[0]I want snack.\w8\1\s[601]\i[6001]\n\nWait just a little bit longer and you may have some.\e"
+			}
+			else
+			{
+				"\0\s[6]%(beep) %(beep) 2 p.m!\w8\1\s[604]:D!!!\e"
+			}
+		}
+		elseif hour == 15 //3pm
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+				"\0%(beep) %(beep) %(beep).\w8\1It's 3 p.m!"
+			}
+		}
+		elseif hour == 16
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		elseif hour == 17
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		elseif hour == 18
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		elseif hour == 19
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		elseif hour == 20
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		elseif hour == 21
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		elseif hour == 22
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		elseif hour == 23
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+ 		elseif hour == 0
+		{
+			if beeptranslation == "on"
+			{
+			}
+			else
+			{
+			}
+		}
+		else
+		{
+			"\0\s[0]It's %(hour12)'o clock.\e"
+		}
+	}
+	elseif mikireflag == 1
+ 	{
+ 		MikireTalk
+	}
+}
+
+OnSecondChange
+{
+	if passsec == 59
+ 		{
+	 	passsec = 1
+ 		passmin = passmin + 1
+		}
+ 	else
+ 		{
+	 	passsec = passsec + 1
+		}
+	if mikireflag == 0 && reference1 == 1
+	{
+		MikireTalk
+	}
+	if mikireflag == 1 && reference1 == 0
+	{
+		EndMikireTalk
+	}
+	mikireflag = reference1
+	if reference2 == 1
+	{
+		if beeptranslation == "on"
+		{
+			"\0\s[500]\1\s[3500]%(bfname)!\w8\0%(gfname)!!!\w5 %(username) is watching!!\w8\1\n\nI don't think they would mind.\w8\0\n\nBeee.....\w8\w8\w8\w8\w8\w8\0\s[0]\1\s[10]\e"
+			
+			"\0\s[500]\1\s[3502]Surprise kiss!\w8\0Yay!\w8\w8\w8\w8\w8\w8\0\s[0]\1\s[10]\e"
+			if WearingHat == 0
+			{
+				"\1\s[500]\0\s[3501]Grrr...\w8\1So fluffy!!!\w8\0\n\nWhy do you like my ears so much anyways?\w8 They're dumb!\w8\1They're adorable!\w8\w8\w8\w8\w8\w8\0\s[0]\1\s[10]\e"
+				
+				"\0\s[500]\1\s[3501]So fluffy!!!\w8\w8\w8\w8\w8\w8\0\s[0]\1\s[10]\e"
+				
+				"\0\s[500]\1\s[3501]Awwww!!!\0Sighhh...\w8\w8\w8\w8\w8\w8\0\s[0]\1\s[10]\e"
+			}
+		}
+		else
+		{
+			"\0\s[500]\1\s[3500]%(bfname)!!!!\w8\0Beeeee!\w8\w8\w8\w8\w8\w8\0\s[0]\1\s[10]\e"
+		
+			"\1\s[500]\0\s[3500]%(beep)%(beep) %(beep)!!!!\w8\1%(bfname)!\w8\w8\w8\w8\w8\w8\0\s[0]\1\s[10]\e"
+		
+			"\0\s[500]\1\s[3500]Hug!!!\w8\0%(beep) %(beep)!\w8\w8\w8\w8\w8\w8\0\s[0]\1\s[10]\e"
+		
+			"\0\s[500]\1\s[3502]Mwa!\w8\0:D\w8\w8\w8\w8\w8\w8\0\s[0]\1\s[10]\e"
+			if WearingHat == 0
+			{
+				"\1\s[500]\0\s[3501]%(beep) %(beep)-\w8\1So fluffy!!!\w8\w8\w8\w8\w8\w8\0\s[0]\1\s[10]\e"
+			}
+		}			
+	}
+}
+
+MikireTalk
+{
+	if beeptranslation == "on"
+	{
+		"\0\s[2]Hey\w2.\w2.\w2.\w2!\w8 I’m off the screen\w2.\w2.\w2. \w8\0\s[5]and it’s a little cramp in here,\w4 haha.\w8 I may be small but that doesn’t mean I can fit everywhere...\e"
+		
+		"\1\s[603]Oh, it looks like %(bfname) is a little off the screen.\w8\0\s[8]I might be small but I can't fit everywhere...\e"
+		
+		"\0\s[5]%(beep)%(beep)!!!!\w8\0\s[601]Oh!\w5 It looks like he's off theedge of the screen,\w5 would you mind moving him back?\e"
+	}
+	else
+	{
+		"\0\s[9]%(beep) %(beep)!\w8\1\s[10]%(bfname) is a little off the screen,\w5 would you mind bringing him back?\w8\0\w8\w8\n\n%(beep)%(beep)%(beep)!!\e"
+	}
+}
+
+EndMikireTalk
+{
+	"\1\s[10]Thank you %(username)!\e"
+	if beeptranslation == "on"
+	{
+	"\0\s[0]Bleg\w2.\w2.\w2.\w6 That was creepy.\w8\0\s[601]Really?\w4 What was back there?\w8\0\s[13]I dunno...\w4 But it was all black and made weird noises.\w8\0\s[5] I hope nothing lives there.\e"
+	
+	"\0\s[9]Phew,\w4 thanks %(username)."
+	}
+	else
+	{
+	"\0\s[5]%(beep)...\e"
+	
+	"\0\s[5]%(beep) %(beep)...\w8\1\s[10]Aww,\w5 Don't worry %(bfname)!\w6 It's okay.\w8\0\n\n%(beep)...\w8\0\s[500]\1\s[3500]\n\nHug will make you feel better!\w8\0\n\n%(beep)!\w8\w8\w8\w8\w8\w8\0\s[0]\1\s[10]"
+	}
+}
+
+OnSurfaceRestore
+{
+	"\0\s[0]\1\s[10]\e"
+}
+
+OnKeyPress
+{
+	if displaytest == 1
+	{
+		"you pressed a key.\n"
+	}
+	--
+	if reference0 == "f1"
+	{
+	"\![open,readme]"
+	}
+	elseif reference0 == "r"
+	{
+	OnLastTalk
+	}
+	elseif reference0 == "t"
+	{
+	OnAiTalk
+	}
+	/*
+	//else
+//	{
+ 		if setkey == "keyplay" || setkey == "keystop" || setkey == "keynext" || setkey == "keyprev" || setkey == "keyclear"
+		{
+			if reference0 _in_ "%(keystop) %(keynext) %(keyprev) %(keyclear) "
+			{
+				"\1\s[1]You're already using that key for something else,\w4 perhaps try a different one?\n\n"
+				--
+				"\![leave,passivemode]"
+			}
+			else
+			{
+				keyplay = reference0
+			}
+		}
+		
+		else //The user didn't want to change a command, so the commands would be verified and lead to which has been pressed.
+		{
+			if muhotkey == "ON"
+			{
+				if reference0 == keyplay
+				{
+					if isplayed == 1
+					{
+						songpaused = songplayed
+						paused = 1
+						Select.playmu
+					}
+					else 
+					{
+						paused = 2
+						Select.playmu
+					}
+				}
+				elseif reference0 == keystop
+				{
+					paused = 0
+					Select.playmu
+				}
+				elseif reference0 == keyprev
+				{
+					Select.previousmu
+				}
+				elseif reference0 == keynext
+				{
+					Select.nextmu
+				}
+				elseif reference0 == keyclear
+				{
+					Select.cleanplaylist
+				}
+				/* elseif reference0 == keyboard
+				{
+					Select.showboard
+				} 
+	}
+		else
+		{
+			if displaytest == 1
+			{
+				"\1\s[1]But the keyboard controls are off...?"
+			}
+		}
+	*/
+	-- //Even if the user didn't want to change any command, always bring back setkey to empty to prevent any problem.
+	setkey = ""
+	--
+	"\e"
+}

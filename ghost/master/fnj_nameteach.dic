@@ -1,0 +1,102 @@
+﻿//---------------------------The User's Name--------------------------
+OnTeachName
+{
+	if reference0 == "TEACHNAME"
+		{
+		"\0\s[0]The user wants to change their name. What do you want it to be?\![open,inputbox,OnNameTeach,-1]\e"
+		}
+	else
+		{
+		}
+}
+
+OnNameTeach
+{
+	tempname = reference0
+	reference0 = TOLOWER(reference0)
+	reference0 = REPLACE(reference0," ","")
+	reference0 = REPLACE(reference0,".","")
+	reference0 = REPLACE(reference0,"-","")
+	
+	if reference0 == "Boyfriend" || reference0 == "bf"
+	{
+		if beeptranslation == "on"
+		{
+		"\0\s[0]That's my name.\w8\1\s[10]That might be confusing. You should try again.\![open,inputbox,OnNameTeach,-1]"
+		"Why? That’s my name, haha.\![open,inputbox,OnNameTeach,-1]"
+		}
+		else
+		{
+		"\0\s[11]%(beep)!\w8\1\s[10]Hehe,\w4 that's his name! You should pry choose a different name.\![open,inputbox,OnNameTeach,-1]"
+		}
+	}
+	elseif reference0 == "Girlfriend" || reference0 == "gf"
+	{
+		"\1\s[10]Hahaha,\w4 no-\w4 That’s my name!\![open,inputbox,OnNameTeach,-1]\e"
+		"\1\s[10]That's my name. Try putting in another one.\![open,inputbox,OnNameTeach,-1]"
+	}
+	elseif reference0 == "Penis" || reference0 == "penis"
+	{
+		"\0\s[0]haha like the loading screen\e"
+	}
+	elseif reference0 == "Whitty" || reference0 == "whitty" || reference0 == "Hex" || reference0 == "hex"
+	{
+		if beeptranslation == "on"
+		{
+		"\0 Uhh.. nuh uh, we know that’s not you.\1\s[10]You don’t need to give us the name of one of our friends,\w4 we want yours!\e"
+		}
+		else
+		{	
+		"\0\s[11]%(beep)!\w8\1\s[10]You should choose your own name,\w4 not name yourself after one of our friends!\![open,inputbox,OnNameTeach,-1]"
+		}
+	}
+	elseif reference0 == "Pico" || reference0 == "pico"
+	{
+		if beeptranslation == "on"
+		{
+		"\0\s[0]You can't be Pico,\w4 Pico's already Pico!\e\![open,inputbox,OnNameTeach,-1]"
+		}
+		else
+		{	
+		"\0\s[11]%(beep) %(beep)!\w8\01\s[601]Hello %(username)!\e"
+		}
+	}
+	elseif reference0 == "whitmore" || reference0 == "Whitmore"
+	{
+		"\0\s[0]nerd lol\e"
+	}
+	elseif reference0 == ""
+	{
+		username = "USER"
+		
+		"\1\s[10]You didn't put in anything.\w8\0\s[0]We will call you USER.\e"
+	}
+	else
+	{
+		username = tempname
+		NameDone
+		if beeptranslation == "on"
+		{
+		"\0\s[0]Sure! I’ll call you %(username)!\e"
+		"\1\s[10], %(username) it is! \e"
+		}
+		else
+		{
+		"\0\s[6]%(beep) %(beep)!\w8\1\s[10]Hello %(username)!"
+		}
+
+	}
+}
+
+NameDone
+{
+	if firstboot == 1
+	{
+		firstboot = 0
+		"\0\s[0]Thank you for inputting your name for the first time, %(username).\w8\1\s[10]Good luck on finishing your ghost!\e"
+	}
+	else
+	{
+	"\0\s[0]The user is now called %(username).\e"
+	}	
+}

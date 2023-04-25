@@ -1,0 +1,16 @@
+﻿charset,UTF-8
+name,Friday Night Jammin'
+type,ghost
+sakura.name,Boyfriend and Girlfriend
+kero.name,Girlfriend
+
+craftman,quonit
+craftmanw,sosig
+craftmanurl,https://friday-funkin-quonit.tumblr.com/
+
+sstp.allowunspecifiedsend,0
+shiori,yaya.dll
+
+icon,gt_template.ico
+
+balloon,FNJ
